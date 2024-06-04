@@ -25,7 +25,7 @@ public class SunriseSunsetController : ControllerBase
     }
 
     [HttpGet("GetSunrise")]
-    public ActionResult<string> GetSunrise([Required]string city, [Required]string timeZone)
+    public ActionResult<DateTime> GetSunrise([Required]string city, [Required]string timeZone)
     {
         try
         {
