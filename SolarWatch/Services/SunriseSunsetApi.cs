@@ -4,7 +4,7 @@ using SolarWatch.Model;
 
 namespace SolarWatch.Services;
 
-public class SunriseSunsetApi
+public class SunriseSunsetApi : ISolarApi
 {
     private readonly ILogger<SunriseSunsetApi> _logger;
     public SunriseSunsetApi(ILogger<SunriseSunsetApi> logger)

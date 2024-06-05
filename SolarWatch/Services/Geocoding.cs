@@ -4,7 +4,7 @@ using SolarWatch.Model;
 
 namespace SolarWatch.Services;
 
-public class Geocoding
+public class Geocoding : IGeocoding
 {
   private readonly ILogger<Geocoding> _logger;
 

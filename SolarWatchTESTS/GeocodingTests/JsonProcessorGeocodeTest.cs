@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using SolarWatch.Model;
 using SolarWatch.Services;
 
@@ -5,7 +6,8 @@ namespace SolarWatchTESTS.Geocoding;
 
 public class JsonProcessorGeocodeTest
 {
-    private static JsonProcessorForGeocoding _jsonProcessor = new();
+    private readonly JsonProcessor _jsonProcessor = new();
+    
     [Test]
     public void ConvertDataToCoordinate_WithValidJson_ReturnsCoordinate()
     {

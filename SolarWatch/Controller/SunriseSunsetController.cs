@@ -10,15 +10,13 @@ namespace SolarWatch.Controller;
 public class SunriseSunsetController : ControllerBase
 {
     private readonly ILogger<SunriseSunsetController> _logger;
-    private readonly JsonProcessorForGeocoding _jsonProcessorForGeocoding;
-    private readonly JsonProcessorForSunriseSunset _jsonProcessorForSunrise;
-    private readonly Geocoding _geocoding;
-    private readonly SunriseSunsetApi _sunriseSunsetApi;
+    private readonly IJsonProcessor _jsonProcessor;
+    private readonly IGeocoding _geocoding;
+    private readonly ISolarApi _sunriseSunsetApi;
 
-    public SunriseSunsetController(JsonProcessorForSunriseSunset jsonProcessorForSunrise, JsonProcessorForGeocoding jsonProcessorForGeocoding, ILogger<SunriseSunsetController> logger, Geocoding geocoding, SunriseSunsetApi sunriseSunsetApi)
+    public SunriseSunsetController(IJsonProcessor jsonProcessorForSunrise, ILogger<SunriseSunsetController> logger, IGeocoding geocoding, ISolarApi sunriseSunsetApi)
     {
-        _jsonProcessorForSunrise = jsonProcessorForSunrise;
-        _jsonProcessorForGeocoding = jsonProcessorForGeocoding;
+        _jsonProcessor = jsonProcessorForSunrise;
         _logger = logger;
         _geocoding = geocoding;
         _sunriseSunsetApi = sunriseSunsetApi;
@@ -31,10 +29,10 @@ public class SunriseSunsetController : ControllerBase
         {
             timeZone = Uri.UnescapeDataString(timeZone);
             Coordinate coordinateForCity =
-                _jsonProcessorForGeocoding.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
+                _jsonProcessor.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
 
-            var SunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone);
-            return Ok(_jsonProcessorForSunrise.GetSunrise(SunriseSunsetData));
+            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone);
+            return Ok(_jsonProcessor.GetSunrise(sunriseSunsetData));
         }
         catch (Exception e)
         {
@@ -50,10 +48,10 @@ public class SunriseSunsetController : ControllerBase
         {
             timeZone = Uri.UnescapeDataString(timeZone);
             Coordinate coordinateForCity =
-                _jsonProcessorForGeocoding.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
+                _jsonProcessor.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
 
-            var SunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone);
-            return Ok(_jsonProcessorForSunrise.GetSunset(SunriseSunsetData));
+            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone);
+            return Ok(_jsonProcessor.GetSunset(sunriseSunsetData));
         }
         catch (Exception e)
         {
