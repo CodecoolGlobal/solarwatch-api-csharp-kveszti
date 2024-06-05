@@ -23,15 +23,16 @@ public class SunriseSunsetController : ControllerBase
     }
 
     [HttpGet("GetSunrise")]
-    public ActionResult<DateTime> GetSunrise([Required]string city, [Required]string timeZone)
+    public ActionResult<DateTime> GetSunrise([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
         try
         {
+            DateTime? sunriseDate = date.HasValue ? date.Value : null; 
             timeZone = Uri.UnescapeDataString(timeZone);
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
 
-            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone);
+            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
             return Ok(_jsonProcessor.GetSunrise(sunriseSunsetData));
         }
         catch (Exception e)
@@ -42,7 +43,7 @@ public class SunriseSunsetController : ControllerBase
     }
     
     [HttpGet("GetSunset")]
-    public ActionResult<string> GetSunset([Required]string city, [Required]string timeZone)
+    public ActionResult<string> GetSunset([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
         try
         {
@@ -50,7 +51,7 @@ public class SunriseSunsetController : ControllerBase
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
 
-            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone);
+            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, date.Value);
             return Ok(_jsonProcessor.GetSunset(sunriseSunsetData));
         }
         catch (Exception e)

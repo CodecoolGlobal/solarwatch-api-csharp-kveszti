@@ -12,9 +12,9 @@ public class SunriseSunsetApi : ISolarApi
         _logger = logger;
     }
     
-    public string GetSunriseAndSunset(Coordinate coordinate, string timeZone)
+    public string GetSunriseAndSunset(Coordinate coordinate, string timeZone, DateTime? date)
     {
-        var url = generateURL(coordinate, timeZone);
+        var url = generateURL(coordinate, timeZone, date);
         using var client = new WebClient();
         
 
@@ -26,7 +26,7 @@ public class SunriseSunsetApi : ISolarApi
             using var document = JsonDocument.Parse(response);
             var root = document.RootElement;
             
-            if (root.EnumerateObject().Any())
+            if (!root.EnumerateObject().Any())
             {
                 _logger.LogError("Solar API: No valid data found for coordinates '{coordinate.Latitude}, {coordinate.Longitude}', and timezone: {timeZone}" );
                 throw new ArgumentException("Invalid input data. Please check coordinates and timezone."); 
@@ -40,13 +40,12 @@ public class SunriseSunsetApi : ISolarApi
             throw;
         }
         
-     
     }
     
 
-    private string generateURL(Coordinate coordinate, string timeZone)
+    private string generateURL(Coordinate coordinate, string timeZone, DateTime? date)
     {
-        return
-            $"https://api.sunrise-sunset.org/json?lat={coordinate.Latitude}&lng={coordinate.Longitude}&date=today&tzid={timeZone}&formatted=0";
+        var dateString = date?.ToString("yyyy-MM-dd") ?? "today"; // Format date or use "today" if null
+        return $"https://api.sunrise-sunset.org/json?lat={coordinate.Latitude}&lng={coordinate.Longitude}&date={dateString}&tzid={timeZone}&formatted=0";
     }
 }

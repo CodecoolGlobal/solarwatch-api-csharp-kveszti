@@ -16,9 +16,10 @@ public class SolarApiTEST
         var sunriseSunsetApi = new SunriseSunsetApi(mockLogger.Object);
         var coordinate = new Coordinate(47.4979, 19.0402); // Budapest
         var timeZone = "Europe/Budapest";
+        var date = DateTime.Today;
 
         // Act
-        var result = sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone);
+        var result = sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone, date);
 
         // Assert
         Assert.NotNull(result);
@@ -37,7 +38,7 @@ public class SolarApiTEST
         
 
         // Assert
-        Assert.Throws<ArgumentException>(() => sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone));
+        Assert.Throws<ArgumentException>(() => sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone, DateTime.Today));
 
     }
 }
