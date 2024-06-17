@@ -23,17 +23,22 @@ public class SunriseSunsetController : ControllerBase
     }
 
     [HttpGet("GetSunrise")]
-    public ActionResult<DateTime> GetSunrise([Required]string city, [Required]string timeZone, DateTime? date = null)
+    public async Task<ActionResult<DateTime>> GetSunrise([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
         try
         {
-            DateTime? sunriseDate = date.HasValue ? date.Value : null; 
+            DateTime? sunriseDate = date.HasValue ? date.Value : null;
             timeZone = Uri.UnescapeDataString(timeZone);
+            var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
             Coordinate coordinateForCity =
-                _jsonProcessor.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
+                _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
 
-            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
+            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
             return Ok(_jsonProcessor.GetSunrise(sunriseSunsetData));
+        }
+        catch (ArgumentException ae) //lehet saját ex típust is specifikálni
+        {
+            return BadRequest(ae.Message);
         }
         catch (Exception e)
         {
@@ -43,15 +48,16 @@ public class SunriseSunsetController : ControllerBase
     }
     
     [HttpGet("GetSunset")]
-    public ActionResult<string> GetSunset([Required]string city, [Required]string timeZone, DateTime? date = null)
+    public async Task<ActionResult<string>> GetSunset([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
         try
         {
             timeZone = Uri.UnescapeDataString(timeZone);
+            var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
             Coordinate coordinateForCity =
-                _jsonProcessor.ConvertDataToCoordinate(_geocoding.GetGeocodeForCity(city));
+                _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
 
-            var sunriseSunsetData = _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, date.Value);
+            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, date.Value);
             return Ok(_jsonProcessor.GetSunset(sunriseSunsetData));
         }
         catch (Exception e)

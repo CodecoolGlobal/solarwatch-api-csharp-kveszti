@@ -12,18 +12,19 @@ public class Geocoding : IGeocoding
   {
     _logger = logger;
   }
-  public string GetGeocodeForCity(string cityName)
+  public async Task<string> GetGeocodeForCity(string cityName)
   {
     var apiKey = "f778716bc3508229848e8235af6fca4e";
     var url = $"http://api.openweathermap.org/geo/1.0/direct?q={cityName}&limit=5&appid={apiKey}";
 
-    using var client = new WebClient();
+    using var client = new HttpClient();
     
     _logger.LogInformation("Calling OpenWeather API Geocoding with url: {url}", url);
     
-    var response = client.DownloadString(url);
+    var response = await client.GetAsync(url);
+    var responseString = await response.Content.ReadAsStringAsync();
     
-    using var document = JsonDocument.Parse(response);
+    using var document = JsonDocument.Parse(responseString);
     var root = document.RootElement;
 
    
@@ -33,7 +34,7 @@ public class Geocoding : IGeocoding
       throw new ArgumentException("Invalid city name. Please provide a valid city name.", nameof(cityName)); 
     }
 
-    return response; 
+    return responseString; 
   }
 }
 

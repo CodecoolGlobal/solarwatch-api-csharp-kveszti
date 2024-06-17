@@ -4,5 +4,5 @@ namespace SolarWatch.Services;
 
 public interface ISolarApi
 {
-    public string GetSunriseAndSunset(Coordinate coordinate, string timeZone, DateTime? date);
+    public Task<string> GetSunriseAndSunset(Coordinate coordinate, string timeZone, DateTime? date);
 }

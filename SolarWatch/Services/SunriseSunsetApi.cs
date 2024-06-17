@@ -12,27 +12,25 @@ public class SunriseSunsetApi : ISolarApi
         _logger = logger;
     }
     
-    public string GetSunriseAndSunset(Coordinate coordinate, string timeZone, DateTime? date)
+    public async Task<string> GetSunriseAndSunset(Coordinate coordinate, string timeZone, DateTime? date)
     {
+        if (coordinate.Latitude < -90 || coordinate.Latitude > 90 || coordinate.Longitude < -180 || coordinate.Longitude > 180)
+        {
+            throw new ArgumentException("Invalid input data. Please check coordinates and timezone.");
+        }
+
         var url = generateURL(coordinate, timeZone, date);
-        using var client = new WebClient();
-        
+        using var client = new HttpClient();
+        HttpResponseMessage response;
+        JsonDocument document;
 
         try
         {
             _logger.LogInformation("Calling Sunrise-Sunset API with url: {url}", url);
-            var response = client.DownloadString(url);
-    
-            using var document = JsonDocument.Parse(response);
-            var root = document.RootElement;
-            
-            if (!root.EnumerateObject().Any())
-            {
-                _logger.LogError("Solar API: No valid data found for coordinates '{coordinate.Latitude}, {coordinate.Longitude}', and timezone: {timeZone}" );
-                throw new ArgumentException("Invalid input data. Please check coordinates and timezone."); 
-            }
-
-            return response;
+           
+            response = await client.GetAsync(url);
+            var responseString = await response.Content.ReadAsStringAsync();
+            document = JsonDocument.Parse(responseString);
         }
         catch (Exception e)
         {
@@ -40,6 +38,15 @@ public class SunriseSunsetApi : ISolarApi
             throw;
         }
         
+        var root = document.RootElement;
+        
+        if (!root.EnumerateObject().Any())
+        {
+            _logger.LogError("Solar API: No valid data found for coordinates '{coordinate.Latitude}, {coordinate.Longitude}', and timezone: {timeZone}" );
+            throw new ArgumentException("Invalid input data. Please check coordinates and timezone."); 
+        }
+
+        return await response.Content.ReadAsStringAsync();
     }
     
 

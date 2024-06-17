@@ -9,7 +9,7 @@ public class SolarApiTEST
 {
     
     [Test]
-    public void GetSunriseAndSunset_WithValidInput_ReturnsData()
+    public async Task GetSunriseAndSunset_WithValidInput_ReturnsData()
     {
         // Arrange
         var mockLogger = new Mock<ILogger<SunriseSunsetApi>>();
@@ -19,7 +19,7 @@ public class SolarApiTEST
         var date = DateTime.Today;
 
         // Act
-        var result = sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone, date);
+        var result = await sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone, date);
 
         // Assert
         Assert.NotNull(result);
@@ -28,7 +28,7 @@ public class SolarApiTEST
     }
     
     [Test]
-    public void GetSunriseAndSunset_WithInvalidInput_ReturnsException()
+    public async Task GetSunriseAndSunset_WithInvalidInput_ReturnsException()
     {
         // Arrange
         var mockLogger = new Mock<ILogger<SunriseSunsetApi>>();
@@ -38,7 +38,7 @@ public class SolarApiTEST
         
 
         // Assert
-        Assert.Throws<ArgumentException>(() => sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone, DateTime.Today));
+        Assert.ThrowsAsync<ArgumentException>(async () => await sunriseSunsetApi.GetSunriseAndSunset(coordinate, timeZone, DateTime.Today));
 
     }
 }
