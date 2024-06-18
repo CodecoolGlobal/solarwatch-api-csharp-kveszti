@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Model;
 using SolarWatch.Services;
+using SolarWatch.Services.Repositories;
 
 namespace SolarWatch.Controller;
 
@@ -13,13 +14,17 @@ public class SunriseSunsetController : ControllerBase
     private readonly IJsonProcessor _jsonProcessor;
     private readonly IGeocoding _geocoding;
     private readonly ISolarApi _sunriseSunsetApi;
+    private readonly ICityRepository _cityRepository;
+    private readonly ISolarDataRepository _solarDataRepository;
 
-    public SunriseSunsetController(IJsonProcessor jsonProcessorForSunrise, ILogger<SunriseSunsetController> logger, IGeocoding geocoding, ISolarApi sunriseSunsetApi)
+    public SunriseSunsetController(IJsonProcessor jsonProcessorForSunrise, ILogger<SunriseSunsetController> logger, IGeocoding geocoding, ISolarApi sunriseSunsetApi, ICityRepository cityRepository, ISolarDataRepository solarDataRepository)
     {
         _jsonProcessor = jsonProcessorForSunrise;
         _logger = logger;
         _geocoding = geocoding;
         _sunriseSunsetApi = sunriseSunsetApi;
+        _cityRepository = cityRepository;
+        _solarDataRepository = solarDataRepository;
     }
 
     [HttpGet("GetSunrise")]
