@@ -30,6 +30,17 @@ public class SunriseSunsetController : ControllerBase
     [HttpGet("GetSunrise")]
     public async Task<ActionResult<DateTime>> GetSunrise([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
+        var cityFromDb = _cityRepository.GetByName("city");
+
+        if (cityFromDb != null)
+        {
+            var solarData = _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
+
+            if (solarData != null)
+            {
+                return Ok(solarData.Sunrise);
+            }
+        }
         try
         {
             DateTime? sunriseDate = date.HasValue ? date.Value : null;
@@ -38,8 +49,18 @@ public class SunriseSunsetController : ControllerBase
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
 
+            var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
+            
+            _cityRepository.Add(cityToAdd);
+
             var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
-            return Ok(_jsonProcessor.GetSunrise(sunriseSunsetData));
+
+            var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
+            var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
+            
+            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone)); //cityid-t megnézni működik-e ha nem, akkor db-ből lekérni!
+            
+            return Ok(sunrise);
         }
         catch (ArgumentException ae) //lehet saját ex típust is specifikálni
         {
@@ -55,20 +76,41 @@ public class SunriseSunsetController : ControllerBase
     [HttpGet("GetSunset")]
     public async Task<ActionResult<string>> GetSunset([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
+        var cityFromDb = _cityRepository.GetByName("city");
+
+        if (cityFromDb != null)
+        {
+            var solarData = _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
+
+            if (solarData != null)
+            {
+                return Ok(solarData.Sunset);
+            }
+        }
         try
         {
             timeZone = Uri.UnescapeDataString(timeZone);
             var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
+            
+            var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
+            
+            _cityRepository.Add(cityToAdd);
 
             var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, date.Value);
-            return Ok(_jsonProcessor.GetSunset(sunriseSunsetData));
+            
+            var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
+            var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
+            
+            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone));
+            
+            return Ok(sunset);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error getting sunrise data");
-            return NotFound("Error getting sunrise data");
+            _logger.LogError(e, "Error getting sunset data");
+            return NotFound("Error getting sunset data");
         }
     }
 }

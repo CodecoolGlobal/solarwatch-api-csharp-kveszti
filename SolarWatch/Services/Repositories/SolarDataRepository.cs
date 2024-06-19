@@ -10,9 +10,13 @@ public class SolarDataRepository : ISolarDataRepository
     {
         dbContext = context;
     }
-    public SolarData? GetSolarData(int cityId, DateTime date, string TimeZone)
+    public SolarData? GetSolarData(int cityId, DateTime? date, string TimeZone)
     {
-        return dbContext.SolarDatas.FirstOrDefault(data => data.Sunrise.Date == date.Date && cityId == data.CityId && TimeZone == data.TimeZone);
+        if (date == null)
+        {
+            date = DateTime.Today;
+        }
+        return dbContext.SolarDatas.FirstOrDefault(data => data.Sunrise.Date == date.Value.Date && cityId == data.CityId && TimeZone == data.TimeZone, null);
     }
     
     public void Add(SolarData data)

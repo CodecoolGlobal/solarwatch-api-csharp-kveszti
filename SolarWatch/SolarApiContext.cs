@@ -8,6 +8,8 @@ public class SolarApiContext :DbContext
     public DbSet<City> Cities { get; set; }
     public DbSet<SolarData> SolarDatas { get; set; }
     
+   
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(
@@ -18,6 +20,10 @@ public class SolarApiContext :DbContext
     {
         modelBuilder.Entity<City>()
             .Property(c => c.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<SolarData>()
+            .Property(sd => sd.Id)
             .ValueGeneratedOnAdd();
 
         base.OnModelCreating(modelBuilder);
