@@ -48,17 +48,19 @@ public class SunriseSunsetController : ControllerBase
             var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
-
             var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
-            
-            _cityRepository.Add(cityToAdd);
 
+            if (cityFromDb == null)
+            {
+                _cityRepository.Add(cityToAdd);
+            }
+            
             var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
 
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone)); //cityid-t megnézni működik-e ha nem, akkor db-ből lekérni!
+           _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone)); //cityid-t megnézni működik-e ha nem, akkor db-ből lekérni!
             
             return Ok(sunrise);
         }
