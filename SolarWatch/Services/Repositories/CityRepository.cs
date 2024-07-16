@@ -1,3 +1,4 @@
+using SolarWatch.Context;
 using SolarWatch.Model;
 
 namespace SolarWatch.Services.Repositories;
@@ -16,6 +17,7 @@ public class CityRepository : ICityRepository
 
     public void Add(City city)
     {
+        Console.WriteLine($"Adding {city.Name} to database...");
         dbContext.Add(city);
         dbContext.SaveChanges();
     }

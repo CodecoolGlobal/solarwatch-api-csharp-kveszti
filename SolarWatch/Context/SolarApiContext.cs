@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using SolarWatch.Model;
 
-namespace SolarWatch;
+namespace SolarWatch.Context;
 
 public class SolarApiContext :DbContext
 {
+    private IConfiguration _configuration;
+  
     public DbSet<City> Cities { get; set; }
     public DbSet<SolarData> SolarDatas { get; set; }
     
@@ -12,8 +14,8 @@ public class SolarApiContext :DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(
-            "Server=localhost,1433;Database=SolarApi;User Id=sa;Password=YourStrongPassword123!;Encrypt=false;");
+        var connectionString = _configuration.GetConnectionString("SolarApi");
+        optionsBuilder.UseSqlServer(connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

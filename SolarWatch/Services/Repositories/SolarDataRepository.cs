@@ -1,3 +1,4 @@
+using SolarWatch.Context;
 using SolarWatch.Model;
 
 namespace SolarWatch.Services.Repositories;

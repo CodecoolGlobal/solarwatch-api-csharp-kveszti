@@ -1,0 +1,6 @@
+CREATE DATABASE SolarApi;
+GO
+
+USE SolarApi; 
+ALTER ROLE db_owner ADD MEMBER [sa];
+GO
