@@ -186,4 +186,40 @@ public class SunriseSunsetController : ControllerBase
             return NotFound("Error deleting City"); 
         }
     }
+    
+    [HttpPost("PostCityToDb"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<SolarData>> PostCity([Required]string country, [Required]string name, string? state, [Required]double latitude,[Required]double longitude)
+    {
+        try
+        {
+            var newData = new City(name, latitude, longitude, country, state);
+
+             _cityRepository.Add(newData);
+
+            return Ok(newData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error adding City");
+            return NotFound("Error adding City"); 
+        }
+    }
+    
+    [HttpPost("PostSolarDataToDb"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<SolarData>> PostSolarData([Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset)
+    {
+        try
+        {
+            var newData = new SolarData(sunrise, sunset, cityId, timeZone);
+
+           _solarDataRepository.Add(newData);
+
+            return Ok(newData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error adding Solar Data");
+            return NotFound("Error adding Solar Data"); 
+        }
+    }
 }
