@@ -40,7 +40,7 @@ public class TokenService : ITokenService
             {
                 new(JwtRegisteredClaimNames.Sub, "TokenForTheApiWithAuth"),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
+                new(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Name, user.UserName),
                 new(ClaimTypes.Email, user.Email)
@@ -62,7 +62,7 @@ public class TokenService : ITokenService
     {
         return new SigningCredentials(
             new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("!SomethingSecret!!SomethingSecret!")
+                Encoding.UTF8.GetBytes("SomethingVerySecretYouWillNeverFindOut")
             ),
             SecurityAlgorithms.HmacSha256
         );

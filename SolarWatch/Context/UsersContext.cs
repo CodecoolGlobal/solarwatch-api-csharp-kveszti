@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SolarWatch.Context;
 
-public class UsersContext : IdentityUserContext<IdentityUser>
+public class UsersContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     private IConfiguration _configuration;
     

@@ -28,7 +28,7 @@ public class SunriseSunsetController : ControllerBase
         _solarDataRepository = solarDataRepository;
     }
 
-    [HttpGet("GetSunrise"), Authorize]
+    [HttpGet("GetSunrise"), Authorize(Roles = "User, Admin")]
     public async Task<ActionResult<DateTime>> GetSunrise([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
         var cityFromDb = _cityRepository.GetByName("city");
@@ -76,7 +76,7 @@ public class SunriseSunsetController : ControllerBase
         }
     }
     
-    [HttpGet("GetSunset"),Authorize]
+    [HttpGet("GetSunset"),Authorize(Roles = "User, Admin")]
     public async Task<ActionResult<string>> GetSunset([Required]string city, [Required]string timeZone, DateTime? date = null)
     {
         var cityFromDb = _cityRepository.GetByName("city");
