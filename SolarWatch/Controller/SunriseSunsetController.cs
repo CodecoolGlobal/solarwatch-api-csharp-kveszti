@@ -116,4 +116,38 @@ public class SunriseSunsetController : ControllerBase
             return NotFound("Error getting sunset data");
         }
     }
+
+    [HttpPut("UpdateSolarData"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<SolarData>> UpdateSolarData([Required]int id, [Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset)
+    {
+        try
+        {
+            var newData = new SolarData(sunrise, sunset, cityId, timeZone);
+            newData.Id = id;
+
+            await _solarDataRepository.Update(newData);
+
+            return Ok(newData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error updating Solar Data");
+            return NotFound("Error updating Solar Data"); 
+        }
+    }
+
+    [HttpDelete("DeleteSolarData"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<int>> DeleteSolarData(int id)
+    {
+        try
+        {
+            await _solarDataRepository.Delete(id);
+            return Ok(id);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error deleting Solar Data");
+            return NotFound("Error deleting Solar Data"); 
+        }
+    }
 }

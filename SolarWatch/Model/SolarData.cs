@@ -10,7 +10,7 @@ public class SolarData
         TimeZone = timeZone;
     }
 
-    public int Id { get; private set; }
+    public int Id { get; set; }
     public DateTime Sunrise { get; set; }
     public DateTime Sunset { get; set; }
     public int CityId { get; set; }
