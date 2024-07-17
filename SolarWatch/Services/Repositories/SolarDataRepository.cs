@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SolarWatch.Context;
 using SolarWatch.Model;
 
@@ -25,4 +26,35 @@ public class SolarDataRepository : ISolarDataRepository
         dbContext.Add(data);
         dbContext.SaveChanges();
     }
+
+    public async Task Update(SolarData newData)
+    {
+        var dbRepresentation = await dbContext.SolarDatas.FirstOrDefaultAsync(dataInDb => newData.Id == dataInDb.Id);
+        
+        if (dbRepresentation == null)
+        {
+            throw new InvalidOperationException($"Product with ID {newData.Id} not found.");
+        }
+        
+        dbRepresentation.Sunrise = newData.Sunrise;
+        dbRepresentation.Sunset = newData.Sunset;
+        dbRepresentation.CityId = newData.CityId;
+        dbRepresentation.TimeZone = newData.TimeZone;
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task Delete(int id)
+    {
+        var dbRepresentation = await dbContext.SolarDatas.FirstOrDefaultAsync(data => data.Id == id);
+        
+        if (dbRepresentation == null)
+        {
+            throw new InvalidOperationException($"Product with ID {id} not found.");
+        }
+
+        dbContext.Remove(dbRepresentation);
+        await dbContext.SaveChangesAsync();
+    }
+    
 }

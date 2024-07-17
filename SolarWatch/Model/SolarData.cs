@@ -11,8 +11,8 @@ public class SolarData
     }
 
     public int Id { get; private set; }
-    public DateTime Sunrise { get; init; }
-    public DateTime Sunset { get; init; }
-    public int CityId { get; init; }
-    public string TimeZone { get; init; }
+    public DateTime Sunrise { get; set; }
+    public DateTime Sunset { get; set; }
+    public int CityId { get; set; }
+    public string TimeZone { get; set; }
 }

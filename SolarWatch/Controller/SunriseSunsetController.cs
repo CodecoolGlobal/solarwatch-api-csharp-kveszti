@@ -61,7 +61,7 @@ public class SunriseSunsetController : ControllerBase
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-           _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone)); //cityid-t megnézni működik-e ha nem, akkor db-ből lekérni!
+           _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone)); 
             
             return Ok(sunrise);
         }
