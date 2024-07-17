@@ -135,6 +135,27 @@ public class SunriseSunsetController : ControllerBase
             return NotFound("Error updating Solar Data"); 
         }
     }
+    
+    [HttpPut("UpdateCity"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<SolarData>> UpdateCity([Required]int id,  [Required]string country, [Required]string name, string? state, [Required]double latitude,[Required]double longitude)
+    {
+        try
+        {
+            var newData = new City(name, latitude, longitude, country, state)
+            {
+                Id = id
+            };
+
+            await _cityRepository.Update(newData);
+
+            return Ok(newData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error updating City");
+            return NotFound("Error updating City"); 
+        }
+    }
 
     [HttpDelete("DeleteSolarData"), Authorize(Roles = "Admin")]
     public async Task<ActionResult<int>> DeleteSolarData(int id)
@@ -148,6 +169,21 @@ public class SunriseSunsetController : ControllerBase
         {
             _logger.LogError(e, "Error deleting Solar Data");
             return NotFound("Error deleting Solar Data"); 
+        }
+    }
+    
+    [HttpDelete("DeleteCity"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<int>> DeleteCity(int id)
+    {
+        try
+        {
+            await _cityRepository.Delete(id);
+            return Ok(id);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error deleting City");
+            return NotFound("Error deleting City"); 
         }
     }
 }
