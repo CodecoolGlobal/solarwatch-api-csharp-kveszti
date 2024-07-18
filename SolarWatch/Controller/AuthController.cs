@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
         _authenticationService = authenticationService;
     }
 
-    [HttpPost("Register")]
+    [HttpPost("api/Register")]
     public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
     {
         if (!ModelState.IsValid)
@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
+        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, true));
     }
 
     private void AddErrors(AuthResult result)
@@ -43,7 +43,7 @@ public class AuthController : ControllerBase
         }
     }
     
-    [HttpPost("Login")]
+    [HttpPost("api/Login")]
     public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
     {
         if (!ModelState.IsValid)
