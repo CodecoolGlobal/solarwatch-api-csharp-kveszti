@@ -1,4 +1,6 @@
 import LoginForm from "../Components/LoginForm.jsx";
+import {useAuth} from "../AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function Login({
                                   LinkButton,
@@ -9,6 +11,8 @@ export default function Login({
                                   SubmitButton,
                                   FormContainerDiv
                               }){
+    const { login } = useAuth();
+    const navigate = useNavigate();
     
     async function HandleLogin(e, email, password){
         e.preventDefault();
@@ -26,7 +30,9 @@ export default function Login({
             console.log(incoming);
             
             if(incoming.success){
-                console.log("Successfully logged in!")
+                console.log("Successfully logged in!");
+                login(incoming.token);
+                navigate("/solar-watch");
             }
             
         } catch(err){

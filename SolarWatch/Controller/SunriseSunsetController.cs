@@ -8,7 +8,7 @@ using SolarWatch.Services.Repositories;
 namespace SolarWatch.Controller;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/api/[controller]")]
 public class SunriseSunsetController : ControllerBase
 {
     private readonly ILogger<SunriseSunsetController> _logger;
@@ -29,7 +29,7 @@ public class SunriseSunsetController : ControllerBase
     }
 
     [HttpGet("GetSunrise"), Authorize(Roles = "User, Admin")]
-    public async Task<ActionResult<DateTime>> GetSunrise([Required]string city, [Required]string timeZone, DateTime? date = null)
+    public async Task<ActionResult<DateTime>> GetSunrise([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery] DateTime? date = null)
     {
         var cityFromDb = _cityRepository.GetByName("city");
 
@@ -77,7 +77,7 @@ public class SunriseSunsetController : ControllerBase
     }
     
     [HttpGet("GetSunset"),Authorize(Roles = "User, Admin")]
-    public async Task<ActionResult<string>> GetSunset([Required]string city, [Required]string timeZone, DateTime? date = null)
+    public async Task<ActionResult<string>> GetSunset([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery]DateTime? date = null)
     {
         var cityFromDb = _cityRepository.GetByName("city");
 

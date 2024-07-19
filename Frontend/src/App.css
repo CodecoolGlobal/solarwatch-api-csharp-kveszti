@@ -5,7 +5,29 @@
   text-align: center;
 }
 
+h2{
+  color: antiquewhite;
+  font-family: Georgia;
+  font-style: italic;
+}
 
+p{
+  color: antiquewhite;
+  font-family: Georgia;
+  font-weight: bold;
+}
+
+.formSelect{
+  border-radius: 10px;
+  margin: auto;
+  margin-bottom: 20px ;
+  padding: 5px;
+  display: block;
+  align-content: center;
+  width: 200px;
+  height: 35px;
+  
+}
 
 .logo {
   height: 6em;

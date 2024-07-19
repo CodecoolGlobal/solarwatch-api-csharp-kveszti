@@ -6,6 +6,7 @@ import Registration from "./Pages/Registration.jsx";
 import Login from "./Pages/Login.jsx";
 import SolarWatch from "./Pages/SolarWatch.jsx";
 import styled from "styled-components";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 
 const LinkButton = styled.button`background-color: transparent;
@@ -40,6 +41,8 @@ const TextInput = styled.input`font-size: large;
     padding: 5px;
     display: block;
     align-content: center;
+    width: 200px;
+    
 `
 const SubmitButton = styled.button`
     margin-top: 15px;
@@ -47,7 +50,9 @@ const SubmitButton = styled.button`
 
 const FormContainerDiv = styled.div`
 background-color: antiquewhite;
-    border-radius: 10px;`
+    border-radius: 10px;
+width: max-content;
+margin: auto;`
 function App() {
     
 
@@ -57,7 +62,7 @@ function App() {
           <Routes>
               <Route path='/register' element={<Registration LinkButton={LinkButton} TransferTextDiv={TransferTextDiv} StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv}/>}></Route>
               <Route path='/login' element={<Login LinkButton={LinkButton} TransferTextDiv={TransferTextDiv} StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv}/>}></Route>
-              <Route path='/solar-watch' element={<SolarWatch />}></Route>
+              <Route path='/solar-watch' element={<ProtectedRoute><SolarWatch StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} /></ProtectedRoute>}></Route>
           </Routes>
       </BrowserRouter>
     </>
