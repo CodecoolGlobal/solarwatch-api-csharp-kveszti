@@ -31,7 +31,7 @@ public class SunriseSunsetController : ControllerBase
     [HttpGet("GetSunrise"), Authorize(Roles = "User, Admin")]
     public async Task<ActionResult<DateTime>> GetSunrise([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery] DateTime? date = null)
     {
-        var cityFromDb = _cityRepository.GetByName("city");
+        var cityFromDb = _cityRepository.GetByName(city);
 
         if (cityFromDb != null)
         {
@@ -79,7 +79,7 @@ public class SunriseSunsetController : ControllerBase
     [HttpGet("GetSunset"),Authorize(Roles = "User, Admin")]
     public async Task<ActionResult<string>> GetSunset([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery]DateTime? date = null)
     {
-        var cityFromDb = _cityRepository.GetByName("city");
+        var cityFromDb = _cityRepository.GetByName(city);
 
         if (cityFromDb != null)
         {
@@ -93,6 +93,7 @@ public class SunriseSunsetController : ControllerBase
         try
         {
             timeZone = Uri.UnescapeDataString(timeZone);
+            DateTime? sunsetDate = date.HasValue ? date.Value : null;
             var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
@@ -101,7 +102,7 @@ public class SunriseSunsetController : ControllerBase
             
             _cityRepository.Add(cityToAdd);
 
-            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, date.Value);
+            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunsetDate);
             
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);

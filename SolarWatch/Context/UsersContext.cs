@@ -11,7 +11,7 @@ public class UsersContext : IdentityDbContext<IdentityUser, IdentityRole, string
     public UsersContext (DbContextOptions<UsersContext> options,IConfiguration configuration)
         : base(options)
     {
-        _configuration = configuration;
+       // _configuration = configuration;
     }
     // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // {

@@ -12,13 +12,22 @@ public class SolarDataRepository : ISolarDataRepository
     {
         dbContext = context;
     }
-    public SolarData? GetSolarData(int cityId, DateTime? date, string TimeZone)
+    public SolarData? GetSolarData(int cityId, DateTime? date, string timeZone)
     {
-        if (date == null)
-        {
-            date = DateTime.Today;
-        }
-        return dbContext.SolarDatas.FirstOrDefault(data => data.Sunrise.Date == date.Value.Date && cityId == data.CityId && TimeZone == data.TimeZone, null);
+            if (date == null)
+            {
+                date = DateTime.Today;
+            }
+
+            // Define the start and end of the day for the date
+            var startOfDay = date.Value.Date;
+            var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
+
+            return dbContext.SolarDatas
+                .FirstOrDefault(data => data.Sunrise >= startOfDay && data.Sunrise <= endOfDay 
+                                                                   && data.CityId == cityId 
+                                                                   && data.TimeZone == timeZone);
+
     }
     
     public void Add(SolarData data)

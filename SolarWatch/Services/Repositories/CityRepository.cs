@@ -18,6 +18,13 @@ public class CityRepository : ICityRepository
 
     public void Add(City city)
     {
+        var existingCity = dbContext.Cities.FirstOrDefault(c => c.Name == city.Name);
+        if (existingCity != null)
+        {
+            Console.WriteLine($"City {city.Name} already exists in the database.");
+            return; 
+        }
+
         Console.WriteLine($"Adding {city.Name} to database...");
         dbContext.Add(city);
         dbContext.SaveChanges();
