@@ -10,14 +10,10 @@ public class SolarApiContext :DbContext
     public DbSet<City> Cities { get; set; }
     public DbSet<SolarData> SolarDatas { get; set; }
     
-    public SolarApiContext(IConfiguration configuration)
+    public SolarApiContext(DbContextOptions<SolarApiContext> options,IConfiguration configuration)
+        : base(options)
     {
         _configuration = configuration;
-    }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var connectionString = _configuration.GetConnectionString("SolarApi");
-        optionsBuilder.UseSqlServer(connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -13,10 +13,10 @@ public class UsersContext : IdentityDbContext<IdentityUser, IdentityRole, string
     {
         _configuration = configuration;
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=SolarApi;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=true;HostNameInCertificate=localhost;");
-    }
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     optionsBuilder.UseSqlServer("Server=localhost,1433;Database=SolarApi;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=true;HostNameInCertificate=localhost;");
+    // }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
