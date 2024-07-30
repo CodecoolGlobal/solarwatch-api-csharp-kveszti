@@ -174,7 +174,7 @@ public class SunriseSunsetController : ControllerBase
     }
     
     [HttpDelete("DeleteCity"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<int>> DeleteCity(int id)
+    public async Task<ActionResult<int>> DeleteCity([FromQuery]int id)
     {
         try
         {
@@ -189,7 +189,7 @@ public class SunriseSunsetController : ControllerBase
     }
     
     [HttpPost("PostCityToDb"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<SolarData>> PostCity([Required]string country, [Required]string name, string? state, [Required]double latitude,[Required]double longitude)
+    public async Task<ActionResult<SolarData>> PostCity([FromQuery, Required]string country, [FromQuery, Required]string name, [FromQuery] string? state, [FromQuery, Required]double latitude,[FromQuery, Required]double longitude)
     {
         try
         {

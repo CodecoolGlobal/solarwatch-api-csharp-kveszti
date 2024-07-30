@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SolarWatch.Context;
 using SolarWatch.Model;
+using SolarWatch.Services.Repositories;
 using Xunit;
 
 namespace SolarWatch.IntegrationTests.Factories;
@@ -14,6 +15,7 @@ public class SolarWatchWebApplicationFactory : WebApplicationFactory<Program>
      //Create a new db name for each SolarWatchWebApplicationFactory. This is to prevent tests failing from changes done in db by a previous test. 
      private readonly string _solarApiDbName = Guid.NewGuid().ToString();
      private readonly string _usersDbName = Guid.NewGuid().ToString();
+     public ICityRepository CityRepository { get; private set; }
 
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -51,6 +53,9 @@ public class SolarWatchWebApplicationFactory : WebApplicationFactory<Program>
             var userContext = scope.ServiceProvider.GetRequiredService<UsersContext>();
             userContext.Database.EnsureDeleted();
             userContext.Database.EnsureCreated();
+            
+            var serviceProvider = services.BuildServiceProvider();
+            CityRepository = serviceProvider.GetRequiredService<ICityRepository>();
             
         });
     }
