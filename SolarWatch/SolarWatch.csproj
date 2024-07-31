@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+      <UserSecretsId>b33cbd0c-42e9-4ac4-9db0-2765a29c8d7a</UserSecretsId>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.5.24306.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.5.24306.3" />
+        <PackageReference Include="Moq" Version="4.20.70" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="SolarWatch.IntegrationTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="SolarWatch.IntegrationTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="SolarWatch.IntegrationTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="SolarWatch.IntegrationTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="SolarWatch.IntegrationTests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="SolarWatch.IntegrationTests\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="SolarWatch.IntegrationTests\obj\SolarWatch.IntegrationTests.csproj.nuget.dgspec.json" />
+    </ItemGroup>
+
+</Project>
