@@ -43,7 +43,8 @@ This is a full-stack application using React with Vite for frontend, ASP.NET for
       - Styled-components	^6.1.12
 3. Clone the repo and download all the packages above.
 4. You can start the program from docker compose:
-  - From the root folder: ```cd SolarWatch```
+  - Please find the ```docker-compose-pattern.yml``` file in the root folder, edit the placeholder info to your own information, and then rename the file to docker-compose.yml
+  - Before giving the terminal command, you should make sure that you are in the root folder of the app
   - In the terminal: ```docker compose up```
 5. You can also start the frontend and backend development servers locally:
   - From the root folder: ```cd SolarWatch```
