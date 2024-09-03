@@ -37,7 +37,7 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16' # You can adjust this to match your project's requirements
+        node-version: '18'
 
     - name: Install Frontend dependencies
       run: npm install
