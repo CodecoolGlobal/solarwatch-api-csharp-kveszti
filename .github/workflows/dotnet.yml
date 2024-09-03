@@ -47,8 +47,9 @@ jobs:
       run: npm run build
       working-directory: Frontend
 
-    # Run Unit Tests
+    # Tests
     - name: Tests
       run: dotnet test --no-build --verbosity normal
+      working-directory: SolarWatch/
 
     
