@@ -48,11 +48,7 @@ jobs:
       working-directory: Frontend
 
     # Run Unit Tests
-    - name: Run Unit Tests
+    - name: Tests
       run: dotnet test --no-build --verbosity normal
-      working-directory: SolarWatchTESTS
 
-    # Run Integration Tests
-    - name: Run Integration Tests
-      run: dotnet test --no-build --verbosity normal
-      working-directory: SolarWatch_Integration_Tests
+    
