@@ -1,6 +1,9 @@
-using System.Net.Http.Json;
+
+using System.Net.Http;
+using System.Threading.Tasks;
 using SolarWatch.IntegrationTests.Factories;
 using Xunit;
+
 
 namespace SolarWatch.IntegrationTests.Tests;
 

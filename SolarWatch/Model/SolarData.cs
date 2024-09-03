@@ -1,3 +1,5 @@
+using System;
+
 namespace SolarWatch.Model;
 
 public class SolarData

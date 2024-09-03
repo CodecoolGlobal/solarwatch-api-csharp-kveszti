@@ -1,5 +1,10 @@
+using System;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SolarWatch.Model;
 
 namespace SolarWatch.Services;

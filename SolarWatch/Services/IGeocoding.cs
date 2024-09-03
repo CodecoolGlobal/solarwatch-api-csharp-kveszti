@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace SolarWatch.Services;
 
 public interface IGeocoding

@@ -1,4 +1,5 @@
-using NUnit.Framework.Internal;
+
+using NUnit.Framework;
 using SolarWatch.Model;
 using SolarWatch.Services;
 

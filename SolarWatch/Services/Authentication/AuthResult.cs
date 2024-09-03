@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace SolarWatch.Services.Authentication;
 
 public record AuthResult(bool Success,

@@ -1,0 +1,32 @@
+services:
+  solarwatch-backend:
+    image: solarwatchbackend
+    build:
+      context: .
+      dockerfile: SolarWatch/Dockerfile
+    ports:
+      - "5227:5227"
+    environment:
+      - CONNECTIONSTRINGS__DEFAULT=<Here comes your db connectionstring detail>
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=<Here comes your own db password>
+    ports:
+      - "1433:1433"
+  
+  solarwatch-frontend:
+    image: solarwatchfrontend
+    build:
+      context: .
+      dockerfile: Frontend/Frontend.dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - PROXY_API=http://solarwatch-backend:5227
+    depends_on:
+      - solarwatch-backend

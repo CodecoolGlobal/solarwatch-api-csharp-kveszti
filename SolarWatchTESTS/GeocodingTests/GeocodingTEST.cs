@@ -1,5 +1,7 @@
+using System;
 using Microsoft.Extensions.Logging;
 using Moq;
+using static System.String;
 
 namespace SolarWatchTESTS.Geocoding;
 

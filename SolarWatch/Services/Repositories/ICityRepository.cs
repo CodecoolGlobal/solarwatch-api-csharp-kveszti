@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using SolarWatch.Model;
 
 namespace SolarWatch.Services.Repositories;

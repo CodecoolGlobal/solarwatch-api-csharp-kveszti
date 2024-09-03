@@ -1,7 +1,13 @@
+using System;
 using System.Text;
+using Castle.Core.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SolarWatch;
@@ -9,6 +15,7 @@ using SolarWatch.Context;
 using SolarWatch.Services;
 using SolarWatch.Services.Authentication;
 using SolarWatch.Services.Repositories;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -106,7 +113,7 @@ void ConfigureSwagger()
 
 void AddDbContexts()
 {
-    var connectionString = builder.Configuration.GetConnectionString("SolarApi");
+    var connectionString = builder.Configuration.GetConnectionString("Default");
     
     if (builder.Environment.IsEnvironment("Testing"))
     {
@@ -121,7 +128,7 @@ void AddDbContexts()
         builder.Services.AddDbContext<SolarApiContext>(options => 
             options.UseSqlServer(connectionString));
         builder.Services.AddDbContext<UsersContext>(options => 
-            options.UseSqlServer("Server=localhost,1433;Database=SolarApi;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=true;HostNameInCertificate=localhost;"));
+            options.UseSqlServer(connectionString));
     }
 }
 

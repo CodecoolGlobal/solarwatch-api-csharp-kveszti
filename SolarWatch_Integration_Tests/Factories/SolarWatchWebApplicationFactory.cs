@@ -1,10 +1,15 @@
+
+using System;
+using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using SolarWatch.Context;
-using SolarWatch.Model;
 using SolarWatch.Services.Repositories;
 using Xunit;
 

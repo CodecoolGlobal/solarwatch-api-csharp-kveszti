@@ -1,5 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
+using NUnit.Framework;
 using SolarWatch.Model;
 using SolarWatch.Services;
 
@@ -23,8 +26,8 @@ public class SolarApiTEST
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsTrue(result.Contains("sunrise"));
-        Assert.IsTrue(result.Contains("sunset"));
+        Assert.IsTrue((bool?)result.Contains("sunrise"));
+        Assert.IsTrue((bool?)result.Contains("sunset"));
     }
     
     [Test]
