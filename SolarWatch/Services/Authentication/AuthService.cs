@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SolarWatch.Services.Authentication;
 
@@ -73,5 +74,13 @@ public class AuthService : IAuthService
         var result = new AuthResult(false, email, userName, "");
         result.ErrorMessages.Add("Bad credentials", "Invalid password");
         return result;
+    }
+
+    public async Task<bool> isAdmin(string userName)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        return roles.Contains("Admin");
     }
 }

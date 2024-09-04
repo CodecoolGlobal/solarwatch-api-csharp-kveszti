@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Contracts;
 using SolarWatch.Services.Authentication;
@@ -61,5 +63,20 @@ public class AuthController : ControllerBase
         }
 
         return Ok(new AuthResponse(result.Email, result.UserName, result.Token, true));
+    }
+
+    [HttpGet("/api/isadmin"), Authorize(Roles = "User, Admin")]
+    public async Task<ActionResult<bool>> SendBackRole()
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var userName = HttpContext.User.Identity.Name;
+        var isAdmin = await _authenticationService.isAdmin(userName);
+
+        return Ok(isAdmin);
+
     }
 }

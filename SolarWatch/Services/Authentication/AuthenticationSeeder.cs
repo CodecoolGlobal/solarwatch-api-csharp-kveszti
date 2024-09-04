@@ -8,11 +8,13 @@ public class AuthenticationSeeder
 {
     private RoleManager<IdentityRole> roleManager;
     private UserManager<IdentityUser> userManager;
+    private readonly IConfiguration _configuration;
     
-    public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+    public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager,  IConfiguration configuration)
     {
         this.roleManager = roleManager;
         this.userManager = userManager;
+        _configuration = configuration;
     }
     
     public void AddRoles()
@@ -42,11 +44,16 @@ public class AuthenticationSeeder
 
     private async Task CreateAdminIfNotExists()
     {
-        var adminInDb = await userManager.FindByEmailAsync("admin@admin.com");
+        var adminEmail = _configuration["Admin:Email"];
+        var adminUsername = _configuration["Admin:Username"];
+        var adminPassword = _configuration["Admin:Password"];
+        
+        
+        var adminInDb = await userManager.FindByEmailAsync(adminEmail);
         if (adminInDb == null)
         {
-            var admin = new IdentityUser { UserName = "admin", Email = "admin@admin.com" };
-            var adminCreated = await userManager.CreateAsync(admin, "admin123");
+            var admin = new IdentityUser { UserName = adminUsername, Email = adminEmail };
+            var adminCreated = await userManager.CreateAsync(admin, adminPassword);
 
             if (adminCreated.Succeeded)
             {

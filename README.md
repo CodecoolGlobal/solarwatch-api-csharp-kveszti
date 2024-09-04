@@ -47,17 +47,24 @@ This is a full-stack application using React with Vite for frontend, ASP.NET for
   - Before giving the terminal command, you should make sure that you are in the root folder of the app
   - In the terminal: ```docker compose up```
 5. You can also start the frontend and backend development servers locally:
-  - Please keep in mind, that if you'd like to run the program this way, you need to setup an appsettings.json file locally in the SolarWatch directory. It needs to have the following structure (with your custom info inserted:)
-    ```json
-     "ConnectionStrings": {
-       "Default": <Here comes your own connection string>
-        },
-      "Jwt": {
-        "ValidIssuer": <Here comes your own string>,
-        "ValidAudience": <Here comes your own string>,
-        "IsserSigningKey": <Here comes your own string>
+   - Please keep in mind, that if you'd like to run the program this way, you need to setup an appsettings.json file locally in the SolarWatch directory. It needs to have the following structure (with your custom info inserted:)
+     ```json
+      "ConnectionStrings": {
+        "Default": <Here comes your own connection string>
+         },
+       "Jwt": {
+         "ValidIssuer": <Here comes your own string>,
+         "ValidAudience": <Here comes your own string>,
+         "IsserSigningKey": <Here comes your own string>
+            }, 
+        "Admin": {
+            "Email": <Here comes your own string>,
+            "Username": <Here comes your own string>,
+            "Password": <Here comes your own string>
+        }
      }
-    ```
+   
+     ```
   - It is also important that you set up an appsettings.Testing.json file, where you use the same connection string structure and use your in-memory db connection string.
   - From the root folder: ```cd SolarWatch```
   - In the terminal: ```dotnet run```

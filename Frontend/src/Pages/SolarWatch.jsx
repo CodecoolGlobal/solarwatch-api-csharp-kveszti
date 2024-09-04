@@ -38,14 +38,12 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
             setTypeOfSunData(() => sunData)
             setIsDisplayed(() => true);
         }
-            
         
         else {
             setIsSomethingWrong(true);
         }
     }
     
-
     useEffect(() => {
         if(isDisplayed){
             setIsSomethingWrong(() => false);
