@@ -62,7 +62,7 @@ function App() {
           <Routes>
               <Route path='/register' element={<Registration LinkButton={LinkButton} TransferTextDiv={TransferTextDiv} StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv}/>}></Route>
               <Route path='/login' element={<Login LinkButton={LinkButton} TransferTextDiv={TransferTextDiv} StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv}/>}></Route>
-              <Route path='/solar-watch' element={<ProtectedRoute><SolarWatch StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} /></ProtectedRoute>}></Route>
+              <Route path='/' element={<ProtectedRoute><SolarWatch StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} /></ProtectedRoute>}></Route>
           </Routes>
       </BrowserRouter>
     </>

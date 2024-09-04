@@ -15,19 +15,11 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
       
       let url = "";
       setIsSomethingWrong(()=> false);
-       
-
-        if(sunData === "Sunset"){
-            url = `api/SunriseSunset/GetSunset?city=${encodeURIComponent(city)}&timeZone=${encodeURIComponent("Europe/Budapest")}`
-            setTypeOfSunData(()=> sunData);
-        }else{
-          url = `api/SunriseSunset/GetSunrise?city=${encodeURIComponent(city)}&timeZone=${encodeURIComponent("Europe/Budapest")}`;
-            setTypeOfSunData(()=> "Sunrise");
-      }
+            url = `api/SunriseSunset/Get${sunData}?city=${encodeURIComponent(city)}&timeZone=${encodeURIComponent("Europe/Budapest")}`
+        
         if (date) {
             url += `&date=${encodeURIComponent(date)}`;
         }
-
 
         const token = localStorage.getItem('token');
     
@@ -38,22 +30,27 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
                 'Authorization': `Bearer ${token}`
             }
         });
-       
+        
         if (response.ok) {
             const data = await response.json();
             setCityToDisplay(() => city);
-            setDataToDisplay(()=> data);}
+            setDataToDisplay(()=> data);
+            setTypeOfSunData(() => sunData)
+            setIsDisplayed(() => true);
+        }
+            
         
         else {
             setIsSomethingWrong(true);
         }
     }
+    
 
     useEffect(() => {
-        if(typeOfSunData != ""){
-            setIsDisplayed(() => true);
+        if(isDisplayed){
+            setIsSomethingWrong(() => false);
         }
-    }, [typeOfSunData]);
+    }, [isDisplayed]);
     
     return(
         <> {isDisplayed? <DisplaySolarData dataToDisplay={dataToDisplay} cityToDisplay={cityToDisplay} typeOfSunData={typeOfSunData} setIsDisplayed={setIsDisplayed}/>: <SearchSolarData StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} fetchSolarData={FetchSolarData} isSomethingWrong={isSomethingWrong}/>}

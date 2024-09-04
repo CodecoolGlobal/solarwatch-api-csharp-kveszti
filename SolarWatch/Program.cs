@@ -134,8 +134,8 @@ void AddDbContexts()
 
 void AddAuthentication()
 {
-    var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-    var issuerSigningKey = builder.Configuration["JwtSettings:IssuerSigningKey"];
+    var jwtSettings = builder.Configuration.GetSection("Jwt");
+    var issuerSigningKey = builder.Configuration["Jwt:IssuerSigningKey"];
     
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

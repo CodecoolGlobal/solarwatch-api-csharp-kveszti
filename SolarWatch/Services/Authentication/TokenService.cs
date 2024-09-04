@@ -12,6 +12,12 @@ namespace SolarWatch.Services.Authentication;
 public class TokenService : ITokenService
 {
     private const int ExpirationMinutes = 30;
+    private readonly IConfiguration _configuration;
+    
+    public TokenService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
     
     public string CreateToken(IdentityUser user, string role)
     {
@@ -27,8 +33,8 @@ public class TokenService : ITokenService
     private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials,
         DateTime expiration) =>
         new(
-            "apiWithAuthBackend",
-            "apiWithAuthBackend",
+            _configuration["Jwt:ValidIssuer"],
+            _configuration["Jwt:ValidAudience"],
             claims,
             expires: expiration,
             signingCredentials: credentials
@@ -62,11 +68,8 @@ public class TokenService : ITokenService
     }
     private SigningCredentials CreateSigningCredentials()
     {
-        return new SigningCredentials(
-            new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("SomethingVerySecretYouWillNeverFindOut")
-            ),
-            SecurityAlgorithms.HmacSha256
-        );
+        var key = _configuration["Jwt:IssuerSigningKey"];
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        return new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
     }
 }

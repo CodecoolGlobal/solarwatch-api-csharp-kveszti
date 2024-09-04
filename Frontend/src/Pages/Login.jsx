@@ -32,7 +32,7 @@ export default function Login({
             if(incoming.success){
                 console.log("Successfully logged in!");
                 login(incoming.token);
-                navigate("/solar-watch");
+                navigate("/");
             }
             
         } catch(err){

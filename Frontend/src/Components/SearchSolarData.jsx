@@ -5,7 +5,7 @@ export default function SearchSolarData({StyledForm, FormLabel, TextInput, Submi
    
     const [date, setDate] = useState();
     const [city, setCity] = useState();
-    const [sunData, setSunData] = useState();
+    const [sunData, setSunData] = useState("Sunrise");
     const ErrorMsg = styled.p`
     color:red;`
     
