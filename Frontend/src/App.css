@@ -64,3 +64,22 @@ p{
 .read-the-docs {
   color: #888;
 }
+
+.logoutButton{
+  margin-left: 0;
+  width: fit-content;
+  margin: 3px;
+}
+
+.adminButton{
+  width: fit-content;
+  margin: 3px;
+}
+.protectedContents{
+  display: flex;
+  flex-direction: column;
+}
+.buttonContainer{
+  display: flex;
+  flex-direction: row;
+}

@@ -1,31 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Navigate} from "react-router-dom";
+import {useAuth} from "./AuthProvider.jsx";
 
 function AdminRoute({children}) {
     
-    const [isAdmin, setIsAdmin] = useState(null);
+  const {fetchIsAdmin, isAdmin} = useAuth();
 
     useEffect( () => {
-        async function fetchIsAdmin(){
-            const token = localStorage.getItem('token');
-            const url = 'api/isadmin';
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }});
-          
-            if(response.ok){
-                const data = await response.json();
-                setIsAdmin(() => data);
-            } else {
-                setIsAdmin(false);
-            }
-        }
         fetchIsAdmin();
-        
     }, []);
     
     if(isAdmin === null){

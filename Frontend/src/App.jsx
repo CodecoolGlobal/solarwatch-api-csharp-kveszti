@@ -25,7 +25,6 @@ const TransferTextDiv = styled.p`display: inline-block;
 
 const StyledForm = styled.form`display: flex;
   flex-direction: column;
-  margin-top: 100px;
   width: 500px;
   border-radius: 25px;`
 

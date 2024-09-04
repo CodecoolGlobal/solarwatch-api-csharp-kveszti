@@ -2,6 +2,7 @@ import DatePicker from "react-datepicker";
 import {useEffect, useState} from "react";
 import SearchSolarData from "../Components/SearchSolarData.jsx";
 import DisplaySolarData from "../Components/DisplaySolarData.jsx";
+import {useAuth} from "../AuthProvider.jsx";
 
 export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButton, FormContainerDiv}){
     const [isDisplayed, setIsDisplayed] = useState(false);
@@ -9,6 +10,7 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
     const [cityToDisplay, setCityToDisplay] = useState("");
     const [typeOfSunData, setTypeOfSunData] = useState("");
     const [isSomethingWrong, setIsSomethingWrong] = useState(false)
+    const { logout } = useAuth();
     
     async function FetchSolarData(e, city, date, sunData){
       e.preventDefault();
