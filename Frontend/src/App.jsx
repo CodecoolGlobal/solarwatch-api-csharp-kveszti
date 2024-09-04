@@ -7,6 +7,8 @@ import Login from "./Pages/Login.jsx";
 import SolarWatch from "./Pages/SolarWatch.jsx";
 import styled from "styled-components";
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import AdminRoute from "./AdminRoute.jsx";
+import AdminPage from "./Pages/AdminPage.jsx";
 
 
 const LinkButton = styled.button`background-color: transparent;
@@ -63,6 +65,8 @@ function App() {
               <Route path='/register' element={<Registration LinkButton={LinkButton} TransferTextDiv={TransferTextDiv} StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv}/>}></Route>
               <Route path='/login' element={<Login LinkButton={LinkButton} TransferTextDiv={TransferTextDiv} StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv}/>}></Route>
               <Route path='/' element={<ProtectedRoute><SolarWatch StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} /></ProtectedRoute>}></Route>
+              <Route path='/admin' element={<AdminRoute><AdminPage/></AdminRoute>}></Route>
+              
           </Routes>
       </BrowserRouter>
     </>
