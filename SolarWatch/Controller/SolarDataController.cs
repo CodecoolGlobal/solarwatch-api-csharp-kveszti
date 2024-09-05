@@ -18,6 +18,21 @@ public class SolarDataController : ControllerBase
         _logger = logger;
     }
     
+    [HttpGet("GetAllSolarData"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<City>>> GetAllSolarData()
+    {
+        try
+        {
+            var allData = await _solarDataRepository.GetAllSolarData();
+            return Ok(allData);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting all solar data");
+            return NotFound();
+        }
+    }
+    
     [HttpPut("UpdateSolarData"), Authorize(Roles = "Admin")]
     public async Task<ActionResult<SolarData>> UpdateSolarData([Required]int id, [Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset)
     {

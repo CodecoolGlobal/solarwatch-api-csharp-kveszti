@@ -32,6 +32,11 @@ public class SolarDataRepository : ISolarDataRepository
                                                                    && data.TimeZone == timeZone);
 
     }
+
+    public async Task<IEnumerable<SolarData>> GetAllSolarData()
+    {
+        return await dbContext.SolarDatas.ToListAsync();
+    }
     
     public void Add(SolarData data)
     {

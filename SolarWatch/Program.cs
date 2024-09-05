@@ -45,11 +45,43 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
-var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
-authenticationSeeder.AddRoles();
-authenticationSeeder.AddAdmin();
+ try {
+    var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
+    authenticationSeeder.AddRoles();
+    authenticationSeeder.AddAdmin();
+} catch (Exception ex)
+ {
+     Console.WriteLine($"Seeding failed: {ex.Message}. Attempting to apply migrations and retry seeding...");
 
-// Configure the HTTP request pipeline.
+     try
+     {
+         var dbContexts = new DbContext[]
+         {
+             scope.ServiceProvider.GetRequiredService<SolarApiContext>(),
+             scope.ServiceProvider.GetRequiredService<UsersContext>()
+         };
+
+         foreach (var context in dbContexts)
+         {
+             context.Database.Migrate();
+         }
+
+         Console.WriteLine("Migrations applied successfully. Retrying seeding...");
+         
+         var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
+         authenticationSeeder.AddRoles();
+         authenticationSeeder.AddAdmin();
+         Console.WriteLine("Seeding completed successfully after applying migrations.");
+     }
+     catch (Exception migrationEx)
+     {
+        
+         Console.WriteLine($"Migrations and retry of seeding failed: {migrationEx.Message}");
+         throw; 
+     }
+ }
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
