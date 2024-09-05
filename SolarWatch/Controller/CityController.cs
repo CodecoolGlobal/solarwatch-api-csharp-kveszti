@@ -11,12 +11,27 @@ namespace SolarWatch.Controller;
 public class CityController: ControllerBase
 {
     private readonly ICityRepository _cityRepository;
-    private readonly ILogger _logger;
+    private readonly ILogger<CityController> _logger;
 
-    public CityController(ILogger logger, ICityRepository cityRepository)
+    public CityController(ILogger<CityController> logger, ICityRepository cityRepository)
     {
         _logger = logger;
         _cityRepository = cityRepository;
+    }
+
+    [HttpGet("GetAllCities"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<City>>> GetAllCities()
+    {
+        try
+        {
+            var allCities = await _cityRepository.GetAllCities();
+            return Ok(allCities);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting all cities");
+            return NotFound();
+        }
     }
     
     [HttpPut("UpdateCity"), Authorize(Roles = "Admin")]

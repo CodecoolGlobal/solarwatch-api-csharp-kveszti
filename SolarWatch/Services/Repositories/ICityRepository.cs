@@ -5,6 +5,7 @@ namespace SolarWatch.Services.Repositories;
 
 public interface ICityRepository
 {
+    public Task<IEnumerable<City>> GetAllCities();
     public City? GetByName(string name);
 
     public void Add(City city);

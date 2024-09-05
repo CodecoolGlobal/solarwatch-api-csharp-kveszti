@@ -10,7 +10,7 @@ namespace SolarWatch.Controller;
 public class SolarDataController : ControllerBase
 {
     private readonly ISolarDataRepository _solarDataRepository;
-    private readonly ILogger _logger;
+    private readonly ILogger<SolarDataController> _logger;
 
     public SolarDataController(ISolarDataRepository solarDataRepository, ILogger<SolarDataController> logger)
     {

@@ -14,6 +14,12 @@ public class CityRepository : ICityRepository
     {
         dbContext = context;
     }
+
+    public async Task<IEnumerable<City>> GetAllCities()
+    {
+        return await dbContext.Cities.ToListAsync();
+    }
+    
     public City? GetByName(string name)
     {
         return dbContext.Cities.FirstOrDefault(c => c.Name == name);
