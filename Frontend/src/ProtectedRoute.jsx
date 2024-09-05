@@ -15,8 +15,14 @@ export default function ProtectedRoute({children}){
         return <Navigate to="/login" />;
     }
 
-    return (<div className="protectedContents"><div className='buttonContainer'><button className="logoutButton" onClick={() => logout()}>Logout</button>{isAdmin? <button className="adminButton" onClick={() => navigate('/admin')}>Admin page</button> : ''}</div>
-            {children}</div>
+    return (
+        <div className="protectedContents">
+            <div className='buttonContainer'>
+                <button className="logoutButton" onClick={() => logout()}>Logout</button>
+                {isAdmin? <button className="adminButton" onClick={() => navigate('/admin')}>Admin page</button> : ''}
+            </div>
+            {children}
+        </div>
 )
     ;
 

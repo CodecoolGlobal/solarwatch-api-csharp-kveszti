@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {useAuth} from "./AuthProvider.jsx";
 
 function AdminRoute({children}) {
     
-  const {fetchIsAdmin, isAdmin} = useAuth();
+  const {fetchIsAdmin, isAdmin, logout} = useAuth();
+    const navigate  = useNavigate();
 
     useEffect( () => {
         fetchIsAdmin();
@@ -19,7 +20,13 @@ function AdminRoute({children}) {
         return <Navigate to="/" />;
     }
     
-    return children
+    return (<div className="protectedContents">
+            <div className='buttonContainer'>
+                <button className="logoutButton" onClick={() => logout()}>Logout</button>
+                <button className="adminButton" onClick={() => navigate('/')}>Homepage</button>
+            </div>
+            {children}</div>
+    )
 }
 
 export default AdminRoute;
