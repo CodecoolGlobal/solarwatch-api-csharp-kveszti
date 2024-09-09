@@ -1,15 +1,13 @@
-using System;
+
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SolarWatch.Model;
 using SolarWatch.Services;
 using SolarWatch.Services.Repositories;
 
 namespace SolarWatch.Controller;
-
+//todo: refactoring this in a way so the similar parts of the two endpoints dont repeat
 [ApiController]
 [Route("/api/[controller]")]
 public class SunriseSunsetController : ControllerBase

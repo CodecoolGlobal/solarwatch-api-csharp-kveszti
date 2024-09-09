@@ -1,7 +1,7 @@
 using System;
 
 namespace SolarWatch.Model;
-
+//todo: creating a new field for search date, migrating the database again, etc.
 public class SolarData
 {
     public SolarData(DateTime sunrise, DateTime sunset, int cityId, string timeZone)

@@ -7,7 +7,7 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
     const [city, setCity] = useState(null);
 
     useEffect(() => {
-        const dateForString = new Date(solarData.sunset);
+        const dateForString = new Date(solarData.sunset); //todo: changing this date for the one that's gonna come from the db when it is refactored
         
      const dayString = `${dateForString.getFullYear()}. ${dateForString.getMonth() + 1 > 10 ? '' : '0'}${dateForString.getMonth() + 1}. ${dateForString.getDay() + 1 > 10 ? '' : '0'}${dateForString.getDay() + 1}.`;
      

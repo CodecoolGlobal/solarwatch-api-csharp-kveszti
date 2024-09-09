@@ -6,7 +6,7 @@ using SolarWatch.Context;
 using SolarWatch.Model;
 
 namespace SolarWatch.Services.Repositories;
-
+//todo: modifying these methods so the search date is also saved
 public class SolarDataRepository : ISolarDataRepository
 {
     private SolarApiContext dbContext;
