@@ -21,13 +21,12 @@ public class SolarDataRepository : ISolarDataRepository
             {
                 date = DateTime.Today;
             }
-
-            // Define the start and end of the day for the date
-            var startOfDay = date.Value.Date;
-            var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
+            
+            var startOfPrevDay = date.Value.Date.AddDays(-1);
+            var endOfNextDay = startOfPrevDay.AddDays(2);
 
             return dbContext.SolarDatas
-                .FirstOrDefault(data => data.Sunrise >= startOfDay && data.Sunrise <= endOfDay 
+                .FirstOrDefault(data => data.Sunrise.Date >= startOfPrevDay && data.Sunset.Date <= endOfNextDay
                                                                    && data.CityId == cityId 
                                                                    && data.TimeZone == timeZone);
 

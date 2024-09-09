@@ -35,10 +35,13 @@ public class SunriseSunsetController : ControllerBase
     public async Task<ActionResult<DateTime>> GetSunrise([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery] DateTime? date = null)
     {
         var cityFromDb = _cityRepository.GetByName(city);
+        
+        Console.WriteLine(cityFromDb.Id);
 
         if (cityFromDb != null)
         {
             var solarData = _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
+           Console.WriteLine(solarData);
 
             if (solarData != null)
             {
@@ -53,10 +56,16 @@ public class SunriseSunsetController : ControllerBase
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
             var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
+            int cityIdToAdd;
 
             if (cityFromDb == null)
             {
                 _cityRepository.Add(cityToAdd);
+                cityIdToAdd = cityToAdd.Id;
+            }
+            else
+            {
+                cityIdToAdd = cityFromDb.Id;
             }
             
             var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
@@ -64,7 +73,7 @@ public class SunriseSunsetController : ControllerBase
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-           _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone)); 
+           _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone)); 
             
             return Ok(sunrise);
         }
