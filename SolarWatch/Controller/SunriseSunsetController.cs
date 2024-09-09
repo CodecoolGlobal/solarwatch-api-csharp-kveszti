@@ -111,6 +111,18 @@ public class SunriseSunsetController : ControllerBase
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
             
             var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
+            int cityIdToAdd;
+
+            if (cityFromDb == null)
+            {
+                _cityRepository.Add(cityToAdd);
+                cityIdToAdd = cityToAdd.Id;
+            }
+            else
+            {
+                cityIdToAdd = cityFromDb.Id;
+            }
+
             
             _cityRepository.Add(cityToAdd);
 
@@ -119,7 +131,7 @@ public class SunriseSunsetController : ControllerBase
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityToAdd.Id, timeZone));
+            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone));
             
             return Ok(sunset);
         }

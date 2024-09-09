@@ -4,6 +4,7 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
     const [date, setDate] = useState(null);
     const [sunsetHour, setSunsetHour] = useState(null);
     const [sunriseHour, setSunriseHour] = useState(null);
+    const [city, setCity] = useState(null);
 
     useEffect(() => {
         const dateForString = new Date(solarData.sunset);
@@ -23,26 +24,37 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
        setSunsetHour(()=> sunsetString)
         
        async function fetchCity(){
-           
-        }
+           const url = `api/City/GetById?id=${solarData.cityId}`;
+           const token = localStorage.getItem('token');
+           const response = await fetch(url,{
+               method: 'GET',
+               headers: {
+                   'Content-Type': 'application/json',
+                   'Authorization': `Bearer ${token}`
+               }
+           });
+     
+           const data = await response.json();
+           setCity(data);
+        };
+       fetchCity()
     }, []);
     
     
     
-    return (
-        <div className="cityDisplayCont">
-            <div className='cityDisplayTextContents'>
-                <h3>{date}</h3>
-                <div>Timezone: {solarData.timeZone}</div>
-                <div>Sunrise: {sunriseHour}</div>
-                <div>Sunset: {sunsetHour}</div>
-            </div>
-            <div className='actionButtons'>
-                <button className='deleteButton' onClick={() => handleSolarDataDelete(solarData.id)}>🗑️</button>
-                <button className='editButton' onClick={() => setIsEditMode(() => true)}>✏️</button>
-            </div>
-        </div>
-    );
+    return city ? (<div className="cityDisplayCont">
+                <div className='cityDisplayTextContents'>
+                    <h3>{date} {city.name}</h3>
+                    <div>Timezone: {solarData.timeZone}</div>
+                    <div>Sunrise: {sunriseHour}</div>
+                    <div>Sunset: {sunsetHour}</div>
+                </div>
+                <div className='actionButtons'>
+                    <button className='deleteButton' onClick={() => handleSolarDataDelete(solarData.id)}>🗑️</button>
+                    <button className='editButton' onClick={() => setIsEditMode(() => true)}>✏️</button>
+                </div>
+            </div> ) 
+        : <div>Loading...</div>;
 }
 
 export default SolarDataDisplayContainer;
