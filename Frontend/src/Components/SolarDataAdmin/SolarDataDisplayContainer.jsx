@@ -21,6 +21,10 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
        
        setSunriseHour(()=>sunriseString);
        setSunsetHour(()=> sunsetString)
+        
+       async function fetchCity(){
+           
+        }
     }, []);
     
     

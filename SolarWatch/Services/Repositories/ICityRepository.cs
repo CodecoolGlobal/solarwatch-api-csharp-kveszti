@@ -7,6 +7,7 @@ public interface ICityRepository
 {
     public Task<IEnumerable<City>> GetAllCities();
     public City? GetByName(string name);
+    public City? GetById(int id);
 
     public void Add(City city);
     

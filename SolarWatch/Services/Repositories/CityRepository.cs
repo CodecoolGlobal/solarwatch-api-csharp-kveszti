@@ -24,6 +24,11 @@ public class CityRepository : ICityRepository
     {
         return dbContext.Cities.FirstOrDefault(c => c.Name == name);
     }
+    
+    public City? GetById(int id)
+    {
+        return dbContext.Cities.FirstOrDefault(c => c.Id == id);
+    }
 
     public void Add(City city)
     {
