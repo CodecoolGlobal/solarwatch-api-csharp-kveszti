@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import CityEdit from "../Components/CityAdmin/CityEdit.jsx";
+
 import CityDisplay from "../Components/CityAdmin/CityDisplay.jsx";
-import SolarDataEdit from "../Components/SolarDataAdmin/SolarDataEdit.jsx";
+
 import SolarDataDisplay from "../Components/SolarDataAdmin/SolarDataDisplay.jsx";
 
 function AdminPage(props) {
@@ -15,10 +15,10 @@ function AdminPage(props) {
             </div>;
         }
         if (view === "city") {
-            return isEditMode ? <CityEdit setIsEditMode={setIsEditMode}/> : <CityDisplay setIsEditMode={setIsEditMode}/>;
+            return <CityDisplay setIsEditMode={setIsEditMode} isEditMode={isEditMode}/>;
         }
         if (view === "solarData") {
-            return isEditMode ? <SolarDataEdit setIsEditMode={setIsEditMode}/> : <SolarDataDisplay setIsEditMode={setIsEditMode}/>;
+            return  <SolarDataDisplay setIsEditMode={setIsEditMode} isEditMode={isEditMode}/>;
         }
         return <div>Something went wrong...</div>;
     }

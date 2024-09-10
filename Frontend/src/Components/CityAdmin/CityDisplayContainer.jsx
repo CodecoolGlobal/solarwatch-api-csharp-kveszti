@@ -9,7 +9,7 @@ function CityDisplayContainer({city, setIsEditMode, handleCityDelete}) {
             </div>
             <div className='actionButtons'>
                 <button className='deleteButton' onClick={() => handleCityDelete(city.id)}>🗑️</button>
-                <button className='editButton' onClick={()=> setIsEditMode(()=> true)}>✏️</button>
+                <button className='editButton' onClick={()=> setIsEditMode(()=> city.id)}>✏️</button>
             </div>
         </div>
     );

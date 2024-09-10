@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import CityDisplayContainer from "./CityDisplayContainer.jsx";
+import CityEditContainer from "./CityEditContainer.jsx";
 
-function CityDisplay({setIsEditMode}) {
+function CityDisplay({setIsEditMode, isEditMode}) {
     const [cities, setCities] = useState(null);
 
     useEffect(() => {
@@ -44,7 +45,7 @@ function CityDisplay({setIsEditMode}) {
     
     return (
        <div className='containerDiv'>
-           {cities ? (cities.sort((a,b) => a.name.localeCompare(b.name)).map(city => <CityDisplayContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete}/>)) : <div>Loading...</div>}
+           {cities ? (cities.sort((a,b) => a.name.localeCompare(b.name)).map(city => isEditMode === city.id ?  <CityEditContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete}/> : <CityDisplayContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete}/>)) : <div>Loading...</div>}
     </div>
     );  
 }
