@@ -5,20 +5,23 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
     const [sunsetHour, setSunsetHour] = useState(null);
     const [sunriseHour, setSunriseHour] = useState(null);
     const [city, setCity] = useState(null);
+    
+    function createDateString(type, date){
+        return type === "withTime" ? `${date.getFullYear()}. ${date.getMonth() + 1 > 10 ? '' : '0'}${date.getMonth() + 1}. ${date.getDay() + 1 > 10 ? '' : '0'}${date.getDay() + 1}. ${date.getHours()}:${date.getMinutes()}` : `${date.getFullYear()}. ${date.getMonth() + 1 > 10 ? '' : '0'}${date.getMonth() + 1}. ${date.getDay() + 1 > 10 ? '' : '0'}${date.getDay() + 1}.`;
+    };
 
     useEffect(() => {
         const dateForString = new Date(solarData.sunset); //todo: changing this date for the one that's gonna come from the db when it is refactored
         
-     const dayString = `${dateForString.getFullYear()}. ${dateForString.getMonth() + 1 > 10 ? '' : '0'}${dateForString.getMonth() + 1}. ${dateForString.getDay() + 1 > 10 ? '' : '0'}${dateForString.getDay() + 1}.`;
+     const dayString = createDateString("withoutTime", dateForString);
      
        setDate(()=> dayString);
        
        const sunsetForString = new Date (solarData.sunset);
        const sunriseForString = new Date(solarData.sunrise);
        
-       const sunriseString = `${sunriseForString.getFullYear()}. ${sunriseForString.getMonth() + 1 > 10 ? '' : '0'}${sunriseForString.getMonth() + 1}. ${sunriseForString.getDay() + 1 > 10 ? '' : '0'}${sunriseForString.getDay() + 1}. ${sunriseForString.getHours()}:${sunriseForString.getMinutes()}`;
-       
-       const sunsetString = `${sunsetForString.getFullYear()}. ${sunsetForString.getMonth() + 1 > 10 ? '' : '0'}${sunsetForString.getMonth() + 1}. ${sunsetForString.getDay() + 1 > 10 ? '' : '0'}${sunsetForString.getDay() + 1}. ${sunsetForString.getHours()}:${sunsetForString.getMinutes()}`;
+       const sunriseString = createDateString("withTime", sunriseForString);
+       const sunsetString = createDateString("withTime", sunsetForString);
        
        setSunriseHour(()=>sunriseString);
        setSunsetHour(()=> sunsetString)
