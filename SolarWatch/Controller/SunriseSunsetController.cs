@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Model;
@@ -82,7 +83,7 @@ public class SunriseSunsetController : ControllerBase
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone)); 
+            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone, sunriseOrSunsetDate ?? DateTime.Today)); 
             
             
             return Ok(type == "sunrise" ? sunrise : sunset);

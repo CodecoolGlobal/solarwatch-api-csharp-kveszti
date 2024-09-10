@@ -34,12 +34,14 @@ public class SolarDataController : ControllerBase
     }
     
     [HttpPut("UpdateSolarData"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<SolarData>> UpdateSolarData([Required]int id, [Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset)
+    public async Task<ActionResult<SolarData>> UpdateSolarData([Required]int id, [Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset, [Required] DateTime searchDate)
     {
         try
         {
-            var newData = new SolarData(sunrise, sunset, cityId, timeZone);
-            newData.Id = id;
+            var newData = new SolarData(sunrise, sunset, cityId, timeZone, searchDate)
+            {
+                Id = id
+            };
 
             await _solarDataRepository.Update(newData);
 
@@ -68,12 +70,12 @@ public class SolarDataController : ControllerBase
     }
     
     [HttpPost("PostSolarDataToDb"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<SolarData>> PostSolarData([Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset)
+    public async Task<ActionResult<SolarData>> PostSolarData([Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset, [Required] DateTime searchDate)
     {
         try
         {
-            var newData = new SolarData(sunrise, sunset, cityId, timeZone);
-
+            var newData = new SolarData(sunrise, sunset, cityId, timeZone, searchDate);
+            
             _solarDataRepository.Add(newData);
 
             return Ok(newData);

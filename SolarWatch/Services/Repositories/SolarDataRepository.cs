@@ -6,7 +6,7 @@ using SolarWatch.Context;
 using SolarWatch.Model;
 
 namespace SolarWatch.Services.Repositories;
-//todo: modifying these methods so the search date is also saved
+
 public class SolarDataRepository : ISolarDataRepository
 {
     private SolarApiContext dbContext;
@@ -56,6 +56,7 @@ public class SolarDataRepository : ISolarDataRepository
         dbRepresentation.Sunset = newData.Sunset;
         dbRepresentation.CityId = newData.CityId;
         dbRepresentation.TimeZone = newData.TimeZone;
+        dbRepresentation.SearchDate = newData.SearchDate;
 
         await dbContext.SaveChangesAsync();
     }
