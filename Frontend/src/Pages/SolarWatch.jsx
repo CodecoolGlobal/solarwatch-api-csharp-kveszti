@@ -9,7 +9,8 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
     const [dataToDisplay, setDataToDisplay] = useState("");
     const [cityToDisplay, setCityToDisplay] = useState("");
     const [typeOfSunData, setTypeOfSunData] = useState("");
-    const [isSomethingWrong, setIsSomethingWrong] = useState(false)
+    const [isSomethingWrong, setIsSomethingWrong] = useState(false);
+    const [searchDateToDisplay, setSearchDateToDisplay] = useState(null);
     const { logout } = useAuth();
     
     async function FetchSolarData(e, city, date, sunData){
@@ -39,6 +40,7 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
             setDataToDisplay(()=> data);
             setTypeOfSunData(() => sunData)
             setIsDisplayed(() => true);
+            setSearchDateToDisplay(() => date);
         }
         
         else {
@@ -53,7 +55,7 @@ export default function SolarWatch({StyledForm, FormLabel, TextInput, SubmitButt
     }, [isDisplayed]);
     
     return(
-        <> {isDisplayed? <DisplaySolarData dataToDisplay={dataToDisplay} cityToDisplay={cityToDisplay} typeOfSunData={typeOfSunData} setIsDisplayed={setIsDisplayed}/>: <SearchSolarData StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} fetchSolarData={FetchSolarData} isSomethingWrong={isSomethingWrong}/>}
+        <> {isDisplayed? <DisplaySolarData dataToDisplay={dataToDisplay} searchDateToDisplay={searchDateToDisplay} cityToDisplay={cityToDisplay} typeOfSunData={typeOfSunData} setIsDisplayed={setIsDisplayed}/>: <SearchSolarData StyledForm={StyledForm} FormLabel={FormLabel} TextInput={TextInput} SubmitButton={SubmitButton} FormContainerDiv={FormContainerDiv} fetchSolarData={FetchSolarData} isSomethingWrong={isSomethingWrong}/>}
         </>
     )
 }

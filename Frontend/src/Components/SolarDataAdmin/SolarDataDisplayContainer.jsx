@@ -13,7 +13,7 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
     };
 
     useEffect(() => {
-        const dateForString = new Date(solarData.sunset); //todo: changing this date for the one that's gonna come from the db when it is refactored
+        const dateForString = new Date(solarData.searchDate); 
         
      const dayString = createDateString("withoutTime", dateForString);
      
