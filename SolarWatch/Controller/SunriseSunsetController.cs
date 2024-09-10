@@ -7,7 +7,7 @@ using SolarWatch.Services;
 using SolarWatch.Services.Repositories;
 
 namespace SolarWatch.Controller;
-//todo: refactoring this in a way so the similar parts of the two endpoints dont repeat
+
 [ApiController]
 [Route("/api/[controller]")]
 public class SunriseSunsetController : ControllerBase
@@ -32,82 +32,38 @@ public class SunriseSunsetController : ControllerBase
     [HttpGet("GetSunrise"), Authorize(Roles = "User, Admin")]
     public async Task<ActionResult<DateTime>> GetSunrise([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery] DateTime? date = null)
     {
-        var cityFromDb = _cityRepository.GetByName(city);
-        
-        Console.WriteLine(cityFromDb.Id);
-
-        if (cityFromDb != null)
-        {
-            var solarData = _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
-           Console.WriteLine(solarData);
-
-            if (solarData != null)
-            {
-                return Ok(solarData.Sunrise);
-            }
-        }
-        try
-        {
-            DateTime? sunriseDate = date.HasValue ? date.Value : null;
-            timeZone = Uri.UnescapeDataString(timeZone);
-            var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
-            Coordinate coordinateForCity =
-                _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
-            var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
-            int cityIdToAdd;
-
-            if (cityFromDb == null)
-            {
-                _cityRepository.Add(cityToAdd);
-                cityIdToAdd = cityToAdd.Id;
-            }
-            else
-            {
-                cityIdToAdd = cityFromDb.Id;
-            }
-            
-            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseDate);
-
-            var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
-            var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
-            
-           _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone)); 
-            
-            return Ok(sunrise);
-        }
-        catch (ArgumentException ae) //lehet saját ex típust is specifikálni
-        {
-            return BadRequest(ae.Message);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error getting sunrise data");
-            return NotFound("Error getting sunrise data");
-        }
+        var actionResult = await getSunriseSunsetData("sunrise", city, timeZone, date);
+        return actionResult;
     }
     
     [HttpGet("GetSunset"),Authorize(Roles = "User, Admin")]
-    public async Task<ActionResult<string>> GetSunset([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery]DateTime? date = null)
+    public async Task<ActionResult<DateTime>> GetSunset([FromQuery, Required]string city, [FromQuery, Required]string timeZone, [FromQuery]DateTime? date = null)
+    {
+       var actionResult = await getSunriseSunsetData("sunset", city, timeZone, date);
+       return actionResult;
+    }
+
+    private async Task<ActionResult<DateTime>> getSunriseSunsetData(string type, string city, string timeZone, DateTime? date)
     {
         var cityFromDb = _cityRepository.GetByName(city);
 
         if (cityFromDb != null)
         {
             var solarData = _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
+            Console.WriteLine(solarData);
 
             if (solarData != null)
             {
-                return Ok(solarData.Sunset);
+                return Ok(type == "sunrise" ? solarData.Sunrise : solarData.Sunset);
             }
         }
         try
         {
+            DateTime? sunriseOrSunsetDate = date;
             timeZone = Uri.UnescapeDataString(timeZone);
-            DateTime? sunsetDate = date.HasValue ? date.Value : null;
             var geocodingResponse = await _geocoding.GetGeocodeForCity(city);
             Coordinate coordinateForCity =
                 _jsonProcessor.ConvertDataToCoordinate(geocodingResponse);
-            
             var cityToAdd = _jsonProcessor.ConvertDataToCity(geocodingResponse);
             int cityIdToAdd;
 
@@ -120,23 +76,25 @@ public class SunriseSunsetController : ControllerBase
             {
                 cityIdToAdd = cityFromDb.Id;
             }
-
             
-            _cityRepository.Add(cityToAdd);
+            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunriseOrSunsetDate);
 
-            var sunriseSunsetData = await _sunriseSunsetApi.GetSunriseAndSunset(coordinateForCity, timeZone, sunsetDate);
-            
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone));
+            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone)); 
             
-            return Ok(sunset);
+            
+            return Ok(type == "sunrise" ? sunrise : sunset);
+        }
+        catch (ArgumentException ae) 
+        {
+            return BadRequest(ae.Message);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error getting sunset data");
-            return NotFound("Error getting sunset data");
+            _logger.LogError(e, type == "sunrise" ? "Error getting sunrise data" : "Error getting sunset data");
+            return NotFound(type == "sunrise" ? "Error getting sunrise data" : "Error getting sunset data");
         }
     }
 }
