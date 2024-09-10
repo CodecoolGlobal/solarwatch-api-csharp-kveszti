@@ -7,7 +7,9 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
     const [city, setCity] = useState(null);
     
     function createDateString(type, date){
-        return type === "withTime" ? `${date.getFullYear()}. ${date.getMonth() + 1 > 10 ? '' : '0'}${date.getMonth() + 1}. ${date.getDay() + 1 > 10 ? '' : '0'}${date.getDay() + 1}. ${date.getHours()}:${date.getMinutes()}` : `${date.getFullYear()}. ${date.getMonth() + 1 > 10 ? '' : '0'}${date.getMonth() + 1}. ${date.getDay() + 1 > 10 ? '' : '0'}${date.getDay() + 1}.`;
+        const day = `${date.getFullYear()}. ${date.getMonth() + 1 > 10 ? '' : '0'}${date.getMonth() + 1}. ${date.getDay() + 1 > 10 ? '' : '0'}${date.getDay() + 1}.`;
+        
+        return type === "withTime" ? day + ` ${date.getHours()}:${date.getMinutes()}` : day;
     };
 
     useEffect(() => {
