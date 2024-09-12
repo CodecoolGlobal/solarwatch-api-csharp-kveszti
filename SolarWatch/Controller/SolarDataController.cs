@@ -76,7 +76,7 @@ public class SolarDataController : ControllerBase
         {
             var newData = new SolarData(sunrise, sunset, cityId, timeZone, searchDate);
             
-            _solarDataRepository.Add(newData);
+            await _solarDataRepository.Add(newData);
 
             return Ok(newData);
         }

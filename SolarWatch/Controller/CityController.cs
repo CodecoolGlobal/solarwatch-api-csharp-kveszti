@@ -26,7 +26,7 @@ public class CityController: ControllerBase
     {
         try
         {
-            var city = _cityRepository.GetById(id);
+            var city = await _cityRepository.GetById(id);
             return Ok(city);
         }
         catch (Exception e)
@@ -94,7 +94,7 @@ public class CityController: ControllerBase
         {
             var newData = new City(name, latitude, longitude, country, state);
 
-            _cityRepository.Add(newData);
+            await _cityRepository.Add(newData);
 
             return Ok(newData);
         }

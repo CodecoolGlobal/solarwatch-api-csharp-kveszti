@@ -15,7 +15,7 @@ public class SolarDataRepository : ISolarDataRepository
     {
         dbContext = context;
     }
-    public SolarData? GetSolarData(int cityId, DateTime? date, string timeZone)
+    public async Task<SolarData?> GetSolarData(int cityId, DateTime? date, string timeZone)
     {
             if (date == null)
             {
@@ -25,8 +25,8 @@ public class SolarDataRepository : ISolarDataRepository
             var startOfPrevDay = date.Value.Date.AddDays(-1);
             var endOfNextDay = startOfPrevDay.AddDays(2);
 
-            return dbContext.SolarDatas
-                .FirstOrDefault(data => data.Sunrise.Date >= startOfPrevDay && data.Sunset.Date <= endOfNextDay
+            return await dbContext.SolarDatas
+                .FirstOrDefaultAsync(data => data.Sunrise.Date >= startOfPrevDay && data.Sunset.Date <= endOfNextDay
                                                                    && data.CityId == cityId 
                                                                    && data.TimeZone == timeZone);
 
@@ -37,10 +37,10 @@ public class SolarDataRepository : ISolarDataRepository
         return await dbContext.SolarDatas.ToListAsync();
     }
     
-    public void Add(SolarData data)
+    public async Task Add(SolarData data)
     {
         dbContext.Add(data);
-        dbContext.SaveChanges();
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task Update(SolarData newData)

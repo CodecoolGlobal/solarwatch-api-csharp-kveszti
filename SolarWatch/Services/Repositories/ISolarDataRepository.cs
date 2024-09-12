@@ -7,9 +7,9 @@ namespace SolarWatch.Services.Repositories;
 public interface ISolarDataRepository
 {
     public Task<IEnumerable<SolarData>> GetAllSolarData();
-    public SolarData? GetSolarData(int cityId, DateTime? date, string TimeZone);
+    public Task<SolarData?> GetSolarData(int cityId, DateTime? date, string TimeZone);
 
-    public void Add(SolarData data);
+    public Task Add(SolarData data);
 
     public Task Update(SolarData newData);
 

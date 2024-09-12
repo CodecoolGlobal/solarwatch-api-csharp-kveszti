@@ -20,19 +20,19 @@ public class CityRepository : ICityRepository
         return await dbContext.Cities.ToListAsync();
     }
     
-    public City? GetByName(string name)
+    public async Task<City?> GetByName(string name)
     {
-        return dbContext.Cities.FirstOrDefault(c => c.Name == name);
+        return await dbContext.Cities.FirstOrDefaultAsync(c => c.Name == name);
     }
     
-    public City? GetById(int id)
+    public async Task<City?> GetById(int id)
     {
-        return dbContext.Cities.FirstOrDefault(c => c.Id == id);
+        return await dbContext.Cities.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public void Add(City city)
+    public async Task Add(City city)
     {
-        var existingCity = dbContext.Cities.FirstOrDefault(c => c.Name == city.Name);
+        var existingCity = await dbContext.Cities.FirstOrDefaultAsync(c => c.Name == city.Name);
         if (existingCity != null)
         {
             Console.WriteLine($"City {city.Name} already exists in the database.");
@@ -41,7 +41,7 @@ public class CityRepository : ICityRepository
 
         Console.WriteLine($"Adding {city.Name} to database...");
         dbContext.Add(city);
-        dbContext.SaveChanges();
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task Update(City city)
