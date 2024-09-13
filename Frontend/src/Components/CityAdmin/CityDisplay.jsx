@@ -42,10 +42,9 @@ function CityDisplay({setIsEditMode, isEditMode}) {
         }
     }
     
-    
     return (
        <div className='containerDiv'>
-           {cities ? (cities.sort((a,b) => a.name.localeCompare(b.name)).map(city => isEditMode === city.id ?  <CityEditContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete}/> : <CityDisplayContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete}/>)) : <div>Loading...</div>}
+           {cities ? (cities.sort((a,b) => a.name.localeCompare(b.name)).map(city => isEditMode === city.id ?  <CityEditContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete} setCities={setCities}/> : <CityDisplayContainer key={city.id} city={city} setIsEditMode={setIsEditMode} handleCityDelete={handleCityDelete}/>)) : <div>Loading...</div>}
     </div>
     );  
 }

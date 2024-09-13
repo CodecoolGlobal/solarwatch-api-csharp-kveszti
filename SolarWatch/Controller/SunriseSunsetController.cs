@@ -46,11 +46,11 @@ public class SunriseSunsetController : ControllerBase
 
     private async Task<ActionResult<DateTime>> getSunriseSunsetData(string type, string city, string timeZone, DateTime? date)
     {
-        var cityFromDb = _cityRepository.GetByName(city);
+        var cityFromDb = await _cityRepository.GetByName(city);
 
         if (cityFromDb != null)
         {
-            var solarData = _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
+            var solarData = await _solarDataRepository.GetSolarData(cityFromDb.Id, date, timeZone);
             Console.WriteLine(solarData);
 
             if (solarData != null)
@@ -70,7 +70,7 @@ public class SunriseSunsetController : ControllerBase
 
             if (cityFromDb == null)
             {
-                _cityRepository.Add(cityToAdd);
+                await _cityRepository.Add(cityToAdd);
                 cityIdToAdd = cityToAdd.Id;
             }
             else
@@ -83,7 +83,7 @@ public class SunriseSunsetController : ControllerBase
             var sunrise = _jsonProcessor.GetSunrise(sunriseSunsetData);
             var sunset = _jsonProcessor.GetSunset(sunriseSunsetData);
             
-            _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone, sunriseOrSunsetDate ?? DateTime.Today)); 
+            await _solarDataRepository.Add(new SolarData(sunrise, sunset, cityIdToAdd, timeZone, sunriseOrSunsetDate ?? DateTime.Today)); 
             
             
             return Ok(type == "sunrise" ? sunrise : sunset);

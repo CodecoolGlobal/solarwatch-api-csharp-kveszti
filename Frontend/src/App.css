@@ -120,7 +120,7 @@ p{
 .actionButtons{
   display: flex;
   flex-direction: row;
-  margin-top: 15px;
+  align-items: center;
 }
 
 .deleteButton, .editButton{
@@ -156,7 +156,7 @@ p{
   color: white;
   cursor: pointer;
   display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: Georgia;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -177,7 +177,25 @@ p{
   color: white;
   border: none;
   border-radius: 0px;
+  font-family: Georgia;
+ 
 }
 
+.cityDisplayFormContents{
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  color: antiquewhite;
+  font-style: italic;
+  font-family: Georgia;
+  margin-right: 15vw;
+  width: 200px;
+}
+.cityDisplayFormContents > input{
+  border-radius: 22px;
+  padding: 4px;
+  font-family: Georgia;
+  
+}
 
 

@@ -52,24 +52,20 @@ public class CityController: ControllerBase
     }
     
     [HttpPut("UpdateCity"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<City>> UpdateCity([Required]int id,  [Required]string country, [Required]string name, string? state, [Required]double latitude,[Required]double longitude)
+    public async Task<ActionResult<City>> UpdateCity([FromBody, Required] City newCity)
     {
         try
         {
-            var newData = new City(name, latitude, longitude, country, state)
-            {
-                Id = id
-            };
-
-            await _cityRepository.Update(newData);
-
-            return Ok(newData);
+            await _cityRepository.Update(newCity);
+        
+            return Ok(newCity);
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error updating City");
             return NotFound("Error updating City"); 
         }
+       
     }
     
     [HttpDelete("DeleteCity"), Authorize(Roles = "Admin")]
