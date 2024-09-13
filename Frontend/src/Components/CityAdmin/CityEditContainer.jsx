@@ -11,35 +11,25 @@ const [longitude, setLongitude] = useState(city.longitude);
         const url = `api/City/UpdateCity`;
         const token = localStorage.getItem('token');
         try {
+            const newCity = {
+                id: city.id,
+                name: name,
+                country: country,
+                state: state,
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude)
+            }
             const response = await fetch(url,{
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body:JSON.stringify({
-                    id: city.id,
-                    name: name,
-                    country: country,
-                    state: state,
-                    latitude: parseFloat(latitude),
-                    longitude: parseFloat(longitude)
-                })
+                body:JSON.stringify({...newCity})
             });
 
                 if(response.ok){
-                    setCities((cities) => {
-                        return cities.map(cityMap => {
-                            if (cityMap.id === city.id) {
-                                cityMap.name = name;
-                                cityMap.country = country;
-                                cityMap.state = state;
-                                cityMap.latitude = parseFloat(latitude);
-                                cityMap.longitude = parseFloat(longitude);
-                            }
-                            return cityMap;
-                        });
-                    })
+                    setCities((cities) =>  cities.map(cityMap => cityMap.id === city.id ? newCity : cityMap));
                     setIsEditMode(() => null)
                 } 
             } catch(e) {
