@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import SolarDataDisplayContainer from "../SolarDataAdmin/SolarDataDisplayContainer.jsx";
+import SolarDataEditContainer from "./SolarDataEditContainer.jsx";
 
-function SolarDataDisplay({setIsEditMode}) {
+function SolarDataDisplay({setIsEditMode, isEditMode}) {
     const [solarData, setSolarData] = useState(null);
 
     useEffect(() => {
@@ -41,11 +42,24 @@ function SolarDataDisplay({setIsEditMode}) {
             console.log("Something went wrong while deleting the city...")
         }
     }
+
+    async function fetchCity(cityId){
+        const url = `api/City/GetById?id=${cityId}`;
+        const token = localStorage.getItem('token');
+        const response = await fetch(url,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return await response.json();
+    };
     
     return (
         <div className='containerDiv'>
-            {solarData ? (solarData.map(data => <SolarDataDisplayContainer
-                    key={data.id} solarData={data} setIsEditMode={setIsEditMode} handleSolarDataDelete={handleSolarDataDelete}/>)) :
+            {solarData ? (solarData.map(data => isEditMode === data.id ? <SolarDataEditContainer key={data.id} solarData={data} setIsEditMode={setIsEditMode} handleSolarDataDelete={handleSolarDataDelete} setSolarData={setSolarData} fetchCity={fetchCity}/>: <SolarDataDisplayContainer
+                    key={data.id} solarData={data} setIsEditMode={setIsEditMode} handleSolarDataDelete={handleSolarDataDelete} fetchCity={fetchCity}/>)) :
                 <div>Loading...</div>}
         </div>
     );

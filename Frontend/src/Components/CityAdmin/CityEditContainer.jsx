@@ -29,7 +29,7 @@ const [longitude, setLongitude] = useState(city.longitude);
             });
 
                 if(response.ok){
-                    setCities((cities) =>  cities.map(cityMap => cityMap.id === city.id ? newCity : cityMap));
+                    setCities((cities) => cities.map(cityMap => cityMap.id === city.id ? newCity : cityMap));
                     setIsEditMode(() => null)
                 } 
             } catch(e) {

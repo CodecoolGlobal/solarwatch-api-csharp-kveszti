@@ -6,7 +6,8 @@ import SolarDataDisplay from "../Components/SolarDataAdmin/SolarDataDisplay.jsx"
 
 function AdminPage(props) {
     const [view, setView] = useState(null) //can be set to "city" or "solarData"
-    const [isEditMode, setIsEditMode] = useState(false);
+    const [isEditModeCity, setIsEditModeCity] = useState(false);
+    const [isEditModeSolar, setIsEditModeSolar] = useState(false);
     
     function renderLogic(){
         if (!view) {
@@ -15,10 +16,10 @@ function AdminPage(props) {
             </div>;
         }
         if (view === "city") {
-            return <CityDisplay setIsEditMode={setIsEditMode} isEditMode={isEditMode}/>;
+            return <CityDisplay setIsEditMode={setIsEditModeCity} isEditMode={isEditModeCity}/>;
         }
         if (view === "solarData") {
-            return  <SolarDataDisplay setIsEditMode={setIsEditMode} isEditMode={isEditMode}/>;
+            return  <SolarDataDisplay setIsEditMode={setIsEditModeSolar} isEditMode={isEditModeSolar}/>;
         }
         return <div>Something went wrong...</div>;
     }
