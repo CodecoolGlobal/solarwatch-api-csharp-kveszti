@@ -77,4 +77,10 @@ public class AuthController : ControllerBase
         return Ok(isAdmin);
 
     }
+
+    [HttpGet("/api/isExpired"), Authorize(Roles = "User, Admin")]
+    public ActionResult<bool> IsExpired()
+    {
+        return Ok(false);
+    }
 }

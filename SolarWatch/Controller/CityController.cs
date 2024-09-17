@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Model;
 using SolarWatch.Services.Repositories;
@@ -19,6 +17,21 @@ public class CityController: ControllerBase
     {
         _logger = logger;
         _cityRepository = cityRepository;
+    }
+
+    [HttpGet("GetByName"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<City>> GetByName([FromQuery] string name)
+    {
+        try
+        {
+           var city = await _cityRepository.GetByName(name);
+           return Ok(city);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error while getting city by name");
+            return NotFound();
+        }
     }
 
     [HttpGet("GetById"), Authorize(Roles = "Admin")]

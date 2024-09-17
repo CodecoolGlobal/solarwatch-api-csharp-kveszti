@@ -7,17 +7,15 @@ function SolarDataDisplayContainer({solarData, setIsEditMode, handleSolarDataDel
     const [city, setCity] = useState(null);
     
     function createDateString(type, date){
-        const day = `${date.getFullYear()}. ${date.getMonth() + 1 > 10 ? '' : '0'}${date.getMonth() + 1}. ${date.getDate() >= 10 ? '' : '0'}${date.getDate()}.`;
+        const day = date.toLocaleDateString('en-CA').replaceAll('-', '.') + '.';
         
         return type === "withTime" ? day + ` ${date.getHours()}:${date.getMinutes() >= 10 ? '' : '0'}${date.getMinutes()}` : day;
     }
 
     useEffect(() => {
-        const dateForString = new Date(solarData.searchDate); 
-        console.log(dateForString);
-     const dayString = createDateString("withoutTime", dateForString);
-     console.log(dayString);
-       setSearchDate(()=> dayString);
+        const dateForString = new Date(solarData.searchDate);
+        const searchDateString = createDateString("withoutTime", dateForString);
+       setSearchDate(()=> searchDateString);
        
        const sunsetForString = new Date (solarData.sunset);
        const sunriseForString = new Date(solarData.sunrise);

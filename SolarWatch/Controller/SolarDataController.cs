@@ -34,15 +34,10 @@ public class SolarDataController : ControllerBase
     }
     
     [HttpPut("UpdateSolarData"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<SolarData>> UpdateSolarData([Required]int id, [Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset, [Required] DateTime searchDate)
+    public async Task<ActionResult<SolarData>> UpdateSolarData([FromBody, Required] SolarData newData)
     {
         try
         {
-            var newData = new SolarData(sunrise, sunset, cityId, timeZone, searchDate)
-            {
-                Id = id
-            };
-
             await _solarDataRepository.Update(newData);
 
             return Ok(newData);
@@ -66,24 +61,6 @@ public class SolarDataController : ControllerBase
         {
             _logger.LogError(e, "Error deleting Solar Data");
             return NotFound("Error deleting Solar Data"); 
-        }
-    }
-    
-    [HttpPost("PostSolarDataToDb"), Authorize(Roles = "Admin")]
-    public async Task<ActionResult<SolarData>> PostSolarData([Required]int  cityId, [Required]string timeZone, [Required]DateTime sunrise, [Required]DateTime sunset, [Required] DateTime searchDate)
-    {
-        try
-        {
-            var newData = new SolarData(sunrise, sunset, cityId, timeZone, searchDate);
-            
-            await _solarDataRepository.Add(newData);
-
-            return Ok(newData);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error adding Solar Data");
-            return NotFound("Error adding Solar Data"); 
         }
     }
 }
